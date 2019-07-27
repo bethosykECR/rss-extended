@@ -1,2 +1,2 @@
-# RGT
-Robusntess-guided testing, RSS, parameter exploration, CARLA and magic.
+# RGT (Robusntess-guided testing)
+RSS, CARLA, parameter exploration and magic.
