@@ -23,7 +23,7 @@ from scenario_runner_extension.rss_aux import RssParams
 from scenario_runner_extension.rss_follow_leading_vehicle import RssFollowLeadingVehicle
 
 import os 
-RES_FOLDER = '/home/user/alena/results'
+RES_FOLDER = '../results'
 if not os.path.exists(RES_FOLDER):
     os.makedirs(RES_FOLDER)
 import time
@@ -49,8 +49,13 @@ from srunner.scenarios.basic_scenario import BasicScenario
 from srunner.tools.config_parser import *
 
 from srunner.scenarios.follow_leading_vehicle import FollowLeadingVehicle
+import math
 
 
+def get_transform(vehicle_location, angle, d=6.4):
+    a = math.radians(angle)
+    location = carla.Location(d * math.cos(a), d * math.sin(a), 2.0) + vehicle_location
+    return carla.Transform(location, carla.Rotation(yaw=180 + angle, pitch=-15))
 
 class ScenarioRunner(object):
 
@@ -239,6 +244,10 @@ class ScenarioRunner(object):
                 self.manager = ScenarioManager(self.world, args.debug)   
                 CarlaActorPool.set_world(self.world)
                 self.prepare_ego_vehicles(config)
+
+                spectator = self.world.get_spectator()
+                spectator.set_transform(get_transform(self.ego_vehicles[0].get_location(), 180))
+
                 scenario = RssFollowLeadingVehicle(self.world, rss_params, self.filename_traj, self.ego_vehicles, config, args.randomize, args.debug)
                 result = True
             except Exception as exception:
