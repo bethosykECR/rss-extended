@@ -48,8 +48,10 @@ def getRobustness(file_name):
     data = readFile(file_name)
     traj_rob = column(data, IDX_rob)
     rob = evaluateRobustness(traj_rob)
-    print('^^^^^^^^^^^^^^^^^^^^^^^^^^^')
     print('ROBUSTNESS = %.3f' % rob)
+    print('\n\n#########################')
+    print('NEXT ITERATION')
+    print('#########################')
     return rob
 
 

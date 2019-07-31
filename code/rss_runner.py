@@ -1,7 +1,5 @@
 from __future__ import print_function
 
-
-
 import traceback
 import argparse
 from argparse import RawTextHelpFormatter
@@ -18,7 +16,8 @@ from tools import other_aux
 from tools import annealing
 from tools import robustness
 
-sys.path.append('/home/user/alena/scenario_runner')
+SCENARIORUNNER_PATH = '/home/user/alena/scenario_runner'
+sys.path.append(SCENARIORUNNER_PATH)
 from scenario_runner_extension.rss_aux import RssParams
 from scenario_runner_extension.rss_follow_leading_vehicle import RssFollowLeadingVehicle
 

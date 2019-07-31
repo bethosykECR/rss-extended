@@ -15,16 +15,16 @@ def get_next_sample(currentSample, initSpace):
     # (This is all about sampler efficiency)
     # Goal is to be able to sample from multivariate standard normal...
     # and then convert back to this space.
-    print('\ncurrent sample:')
-    print(currentSample)
+    #print('\ncurrent sample:')
+    #print(currentSample)
 
     sampleWidth = currentSample - initSpace[:,0]
     intervalWidths = initSpace[:,1] - initSpace[:,0]
-    print('\ninterval width:')
-    print(intervalWidths)
+    #print('\ninterval width:')
+    #print(intervalWidths)
     scaledSample = sampleWidth/intervalWidths
-    print('\nscaled sample')
-    print(scaledSample)
+    #print('\nscaled sample')
+    #print(scaledSample)
     # Trick 2: Sample from multivariate normal and get a unit direction
     direction = np.random.normal(size=(np.size(intervalWidths,)))
     length = LA.norm(direction)
@@ -69,8 +69,8 @@ def get_next_sample(currentSample, initSpace):
 
     # Trick 5: Convert back to actual sample space, basically undo 'Trick 1'
     nextSample = (scaledSample + z*direction)*intervalWidths + initSpace[:,0]
-    print('\nNEXT sample')
-    print(nextSample)
+    #print('\nNEXT sample')
+    #print(nextSample)
     return nextSample
 
 def accept_value(proposal, objective, temperature):
