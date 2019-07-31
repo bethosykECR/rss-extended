@@ -3,8 +3,6 @@ import py_trees
 
 from scenario_runner_extension.rss_basic_agent import RssBasicAgent
 
-import sys
-sys.path.append('/home/user/alena/scenario_runner')
 from srunner.scenariomanager.atomic_scenario_behavior import AtomicBehavior, calculate_distance
 from srunner.scenariomanager.carla_data_provider import CarlaDataProvider
 

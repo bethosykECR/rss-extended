@@ -4,8 +4,6 @@ import py_trees
 from scenario_runner_extension.rss_behavior import RssBasicAgentBehavior
 from scenario_runner_extension.rss_criteria import RssTest
 
-import sys
-sys.path.append('/home/user/alena/scenario_runner')
 from srunner.scenarios.follow_leading_vehicle import FollowLeadingVehicle
 from srunner.scenariomanager.atomic_scenario_behavior import *
 from srunner.scenariomanager.atomic_scenario_criteria import *

@@ -1,10 +1,6 @@
 import py_trees
-
 from tools import dist_aux
 from tools import other_aux
-
-import sys
-sys.path.append('/home/user/alena/scenario_runner')
 from srunner.scenariomanager.atomic_scenario_criteria import Criterion
 
 class RssTest(Criterion):
