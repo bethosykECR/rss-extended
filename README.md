@@ -3,11 +3,21 @@ RSS, CARLA, parameter exploration and magic.
 
 # Usage
 ## Installation
-- Install CARLA 0.9.6
-- Install Scenario Runner (version compatible with CARLA 0.9.6)
+- Install CARLA 0.9.5
+- Install Scenario Runner (version compatible with CARLA 0.9.5)
 - Git clone this code
-- Modify paths of rss_runner to your desired folders
+- Define the scenario_runner path:
+```
+export ROOT_SCENARIO_RUNNER=path/to/your/scenario_runner
+``` 
+
 
 ## Launch 
-- Run carla server with flags: /Game/Carla/Maps/Town01 -fps=20
-- Run rss_runner.py
+- Run carla server with required flags for this setting: 
+```
+./CarlaUE4.sh /Game/Carla/Maps/Town01 -benchmark -fps=20
+```
+- Run rss_runner.py:
+```
+python rss_runner.py
+```
