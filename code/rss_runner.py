@@ -10,18 +10,17 @@ import inspect
 import carla
 import numpy as np
 import sys
+import os
 
 from tools import dist_aux
 from tools import other_aux
 from tools import annealing
 from tools import robustness
 
-SCENARIORUNNER_PATH = '/home/user/alena/scenario_runner'
-sys.path.append(SCENARIORUNNER_PATH)
+sys.path.append(os.getenv('ROOT_SCENARIO_RUNNER'))
 from scenario_runner_extension.rss_aux import RssParams
 from scenario_runner_extension.rss_follow_leading_vehicle import RssFollowLeadingVehicle
 
-import os 
 RES_FOLDER = '../results'
 if not os.path.exists(RES_FOLDER):
     os.makedirs(RES_FOLDER)
@@ -73,7 +72,6 @@ class ScenarioRunner(object):
     # Tunable parameters
     client_timeout = 30.0  # in seconds
     wait_for_world = 20.0  # in seconds
-    frame_rate = 20.0      # in Hz
     world = None
     manager = None
     additional_scenario_module = None
@@ -97,7 +95,7 @@ class ScenarioRunner(object):
         self.world = self.client.get_world()
 
         settings = self.world.get_settings()
-        settings.fixed_delta_seconds = 1.0 / self.frame_rate
+        #settings.synchronous_mode = True
         self.world.apply_settings(settings)
 
         CarlaActorPool.set_world(self.world)
@@ -118,6 +116,10 @@ class ScenarioRunner(object):
         """
         Remove and destroy all actors
         """
+        settings = self.world.get_settings()
+        settings.synchronous_mode = False
+        self.world.apply_settings(settings)
+
         CarlaDataProvider.cleanup()
         CarlaActorPool.cleanup()
 
@@ -205,10 +207,6 @@ class ScenarioRunner(object):
 
         # Wait for the world to be ready
         self.world.tick()
-        settings = self.world.get_settings()
-        settings.fixed_delta_seconds = 1.0 / self.frame_rate
-        self.world.apply_settings(settings)
-
         return True
 
     def load_and_run_scenario(self, args, config, scenario):
