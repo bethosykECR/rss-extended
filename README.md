@@ -8,8 +8,9 @@ RSS, CARLA, parameter exploration and magic.
 - Git clone this code
 - Define the scenario_runner path:
 ```
-ROOT_SCENARIO_RUNNER=/home/user/alena/scenario_runne
+export ROOT_SCENARIO_RUNNER=path/to/your/scenario_runner
 ``` 
+
 
 ## Launch 
 - Run carla server with required flags for this setting: 
