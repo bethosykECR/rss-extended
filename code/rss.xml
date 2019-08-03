@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<scenarios>
+    <scenario name="lvdad" type="FollowLeadingVehicle" town="Town01">
+        <ego_vehicle x="-2" y="15" z="0.5" yaw="90" model="vehicle.lincoln.mkz2017" />
+    </scenario>
+</scenarios>

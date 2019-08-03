@@ -20,6 +20,8 @@ from tools import robustness
 sys.path.append(os.getenv('ROOT_SCENARIO_RUNNER'))
 from scenario_runner_extension.rss_aux import RssParams
 from scenario_runner_extension.rss_follow_leading_vehicle import RssFollowLeadingVehicle
+from scenario_runner_extension.rss_follow_leading_vehicle import RssLVDAD 
+
 
 RES_FOLDER = '../results'
 if not os.path.exists(RES_FOLDER):
@@ -50,10 +52,10 @@ from srunner.scenarios.follow_leading_vehicle import FollowLeadingVehicle
 import math
 
 
-def get_transform(vehicle_location, angle, d=6.4):
+def get_transform(vehicle_location, angle, pitch, d=6.4):
     a = math.radians(angle)
     location = carla.Location(d * math.cos(a), d * math.sin(a), 2.0) + vehicle_location
-    return carla.Transform(location, carla.Rotation(yaw=180 + angle, pitch=-15))
+    return carla.Transform(location, carla.Rotation(yaw=180 + angle, pitch=pitch))
 
 class ScenarioRunner(object):
 
@@ -241,11 +243,17 @@ class ScenarioRunner(object):
                 self.manager = ScenarioManager(self.world, args.debug)   
                 CarlaActorPool.set_world(self.world)
                 self.prepare_ego_vehicles(config)
-
                 spectator = self.world.get_spectator()
-                spectator.set_transform(get_transform(self.ego_vehicles[0].get_location(), 180))
 
-                scenario = RssFollowLeadingVehicle(self.world, rss_params, self.filename_traj, self.ego_vehicles, config, args.randomize, args.debug)
+                if (args.scenario == 'FollowLeadingVehicle_1'):
+                    spectator.set_transform(get_transform(carla.Location(210, 133, 120), 90, -90)) # get_transform(self.ego_vehicles[0].get_location(), 180, -15)
+                    scenario = RssFollowLeadingVehicle(self.world, rss_params, self.filename_traj, self.ego_vehicles, config, args.randomize, args.debug)
+                elif (args.scenario == 'lvdad'):
+                    spectator.set_transform(get_transform(carla.Location(-2, 180, 170), 180, -90))
+                    scenario = RssLVDAD(self.world, rss_params, self.filename_traj, self.ego_vehicles, config, args.randomize, args.debug)
+                else:
+                    sys.exit('Wrong name of the scenario') # exits the program
+                
                 result = True
             except Exception as exception:
                 print("The scenario cannot be loaded")
@@ -256,13 +264,14 @@ class ScenarioRunner(object):
         self.load_and_run_scenario(args, config, scenario)
         rob = robustness.getRobustness(args.filename_traj)
 
-        other_aux.write2csv(args.filename_rob, rob)
+        other_aux.write2csv(args.filename_rob, [rob])
         return rob
 
 
 
     def run(self, args):
         scenario_config_file = find_scenario_config(args.scenario, args.configFile) # xml file
+        
         scenario_configurations = parse_scenario_configuration(scenario_config_file, args.scenario)
         config = scenario_configurations[0] # since we work only with one scenario!
 
@@ -364,7 +373,12 @@ if __name__ == '__main__':
 
     ARGUMENTS.filename_traj = TRAJ_FILENAME
     ARGUMENTS.filename_rob = ROB_FILENAME
-    ARGUMENTS.scenario = 'FollowLeadingVehicle_1'
+    ARGUMENTS.configFile = os.path.join(os.getcwd(), 'rss.xml') # do not change this line
+    # but do change this scenario:
+    #ARGUMENTS.scenario = 'FollowLeadingVehicle_1'
+    ARGUMENTS.scenario = 'lvdad'
+
+    
     ARGUMENTS.reloadWorld = True
 
     SCENARIORUNNER = None
