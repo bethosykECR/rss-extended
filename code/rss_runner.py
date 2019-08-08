@@ -11,6 +11,7 @@ import carla
 import numpy as np
 import sys
 import os
+import time
 
 from tools import dist_aux
 from tools import other_aux
@@ -18,18 +19,17 @@ from tools import annealing
 from tools import robustness
 
 sys.path.append(os.getenv('ROOT_SCENARIO_RUNNER'))
-from scenario_runner_extension.rss_aux import RssParams
+from scenario_runner_extension.rss_aux import defineRssParams
+from scenario_runner_extension.rss_aux import RssParamsInit
 from scenario_runner_extension.rss_follow_leading_vehicle import RssFollowLeadingVehicle
 from scenario_runner_extension.rss_follow_leading_vehicle import RssLVDAD 
 
 
-RES_FOLDER = '../results'
+RES_FOLDER = '../results-' + time.strftime("%d-%H-%M-%S")
 if not os.path.exists(RES_FOLDER):
     os.makedirs(RES_FOLDER)
-import time
-TRAJ_FILENAME = os.path.join(RES_FOLDER, 'trajectory.csv')
-ROB_FILENAME = os.path.join(RES_FOLDER, ('rob-'+time.strftime("%d-%H-%M-%S")+'.csv'))
 
+TRAJ_FILENAME = os.path.join(RES_FOLDER, 'trajectory.csv')
 
 from srunner.scenariomanager.carla_data_provider import *
 from srunner.scenariomanager.scenario_manager import ScenarioManager
@@ -80,7 +80,6 @@ class ScenarioRunner(object):
 
     def __init__(self, args):
         self.filename_traj = args.filename_traj
-        self.filename_rob = args.filename_rob
         """
         Setup CARLA client and world
         Setup ScenarioManager
@@ -230,10 +229,8 @@ class ScenarioRunner(object):
         self.cleanup()
 
 
-    def simulate(self, config, args, x):
-        rss_params = RssParams(x)
-        print(rss_params)  
-        file = open(args.filename_traj, 'wb')  
+    def simulate(self, config, args, rss_params):
+        file = open(self.filename_traj, 'wb')  
         file.close()
 
         result = False
@@ -262,11 +259,9 @@ class ScenarioRunner(object):
                 self.cleanup()
                 pass
         self.load_and_run_scenario(args, config, scenario)
-        rob = robustness.getRobustness(args.filename_traj)
+        rob = robustness.getRobustness(self.filename_traj)
 
-        other_aux.write2csv(args.filename_rob, [rob])
         return rob
-
 
 
     def run(self, args):
@@ -276,79 +271,39 @@ class ScenarioRunner(object):
         config = scenario_configurations[0] # since we work only with one scenario!
 
         num_simult_runs = 1
-        nruns = 200
+        nruns = 5000
         ####################################
-        # 0 
-        alpha_lon_accel_max = 16.62885703232409
-        alpha_lon_accel_max_min = 0.0
-        alpha_lon_accel_max_max = 20.0
-        # 1
-        alpha_lon_break_max = 64.4225632047746
-        alpha_lon_break_max_min = 8
-        alpha_lon_break_max_max = 100.0
-        # 2
-        #alpha_lon_brake_min = 4.0
-        #alpha_lon_brake_min = 100.0
-        #alpha_lon_brake_min_min = 0.0
-        #alpha_lon_brake_min_max = 6.0
-        
-        # 3
-        #alpha_lon_brake_min_correct = 3.0
-        #alpha_lon_brake_min_correct_min = 0.0
-        #alpha_lon_brake_min_correct_max = 3.5
-        # 4
-        #alpha_lat_accel_max = 0.2
-        #alpha_lat_accel_max_min = 0.0
-        #alpha_lat_accel_max_max = 2
-        # 5
-        #alpha_lat_brake_min = 0.8
-        #alpha_lat_brake_min_min = 0.0
-        #alpha_lat_brake_min_max = 2
-        # 6
-        #lateral_fluctuation_margin = 0.0
-        #lateral_fluctuation_margin_min = 0.0
-        #lateral_fluctuation_margin_max = 0.01
-        # 7
-        #response_time = 0.01
-        #response_time_min = 0.01
-        #response_time_max = 10.0
 
-        #################################
-        #true:
-        #alpha_lon_accel_max = 3.5
-        #alpha_lon_break_max = 8.0
-        #alpha_lon_brake_min = 4.0
-        #alpha_lon_brake_min_correct = 3.0
-        #alpha_lat_accel_max = 0.2
-        #alpha_lat_brake_min = 0.8
-        #lateral_fluctuation_margin = 0.0
-        #response_time = 1.0
+        search_names = ['alpha_lon_accel_max', 'response_time']
+        alpha_lon_accel_max = 3.5
+        response_time = 1.0
         ####################################
-        x0 = np.array([alpha_lon_accel_max,
-                       alpha_lon_break_max])
-                       #alpha_lon_brake_min,
-                       #alpha_lon_brake_min_correct,
-                       #alpha_lat_accel_max,
-                       #alpha_lat_brake_min,
-                       #lateral_fluctuation_margin,
-                       #response_time])
+        x0, searchSpace = RssParamsInit().getInit(search_names,
+                                                   alpha_lon_accel_max = alpha_lon_accel_max,
+                                                   response_time = response_time)
+        print('X0 = %s' % x0)
+        print('SearchSpace = %s\n' % searchSpace)
+        #-------------------------------
         X0 =[]
         for _ in xrange(num_simult_runs):
             X0.append(x0)
-
         ####################################
-        searchSpace = np.array([[alpha_lon_accel_max_min, alpha_lon_accel_max_max], 
-                                [alpha_lon_break_max_min, alpha_lon_break_max_max]])
-                                #[alpha_lon_brake_min_min, alpha_lon_brake_min_max],
-                                #[alpha_lon_brake_min_correct_min, alpha_lon_brake_min_correct_max],
-                                #[alpha_lat_accel_max_min, alpha_lat_accel_max_max],
-                                #[alpha_lat_brake_min_min, alpha_lat_brake_min_max],
-                                #[lateral_fluctuation_margin_min, lateral_fluctuation_margin_max],
-                                #[response_time_min, response_time_max]])
 
+
+        ####################################        
         def ff(x):
-            return self.simulate(config, args, x)
+            rss_params = defineRssParams(x, search_names)
+            rss_params['alpha_lon_brake_min_correct'] = 0.1
+            print('RSS params: %s' % rss_params)
 
+            return self.simulate(config, args, rss_params)
+
+        # reproduce trajs
+        '''
+        for i in range(10):
+            self.filename_traj = os.path.join(RES_FOLDER, ('trajectory'+str(i)+'.csv'))
+            ff(x0)
+        '''
         best_x_history, best_f_history, x_history, f_history, accept_x_history, accept_flags = annealing.runFunc(ff, X0, searchSpace, nruns, num_simult_runs, RES_FOLDER) 
 
 
@@ -372,7 +327,6 @@ if __name__ == '__main__':
     ARGUMENTS = PARSER.parse_args()
 
     ARGUMENTS.filename_traj = TRAJ_FILENAME
-    ARGUMENTS.filename_rob = ROB_FILENAME
     ARGUMENTS.configFile = os.path.join(os.getcwd(), 'rss.xml') # do not change this line
     # but do change this scenario:
     #ARGUMENTS.scenario = 'FollowLeadingVehicle_1'

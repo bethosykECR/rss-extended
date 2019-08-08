@@ -1,33 +1,82 @@
 import carla
 import weakref
 import inspect
+import numpy as np
 
-class RssParams:
-    def __init__(self, x):
-        try:
-            assert(len(x) == 2)
-            self.alpha_lon_accel_max = x[0]
-            self.alpha_lon_brake_max = x[1]
-            #self.alpha_lon_brake_min = x[2]
-            #self.alpha_lon_brake_min_correct = x[3]
-            #self.alpha_lat_accel_max = x[4]
-            #self.alpha_lat_brake_min = x[5]
-            #self.lateral_fluctuation_margin = x[6]
-            #self.response_time = x[3]
-        except AssertionError as exception:
-            print('x length is not rssParam appropriate')
-            print(exception)
+#==============================================================================
+def defineRssParams(x, names):
+    rss_params = {}
+    for i, name in enumerate(names):
+        rss_params[name] = x[i]
+    return rss_params
+#==============================================================================    
+'''
+class RssParamsDefault:
+    def __init__(self):
+        self.alpha_lon_accel_max = 3.5
+        self.alpha_lon_brake_max = 8.0
+        self.alpha_lon_brake_min = 4.0
+        self.alpha_lon_brake_min_correct = 3.0
+        self.alpha_lat_accel_max = 0.2
+        self.alpha_lat_brake_min = 0.8
+        self.lateral_fluctuation_margin = 0.0
+        self.response_time = 1.0
+'''
+#==============================================================================
+class RssParamsInit:
+    def __init__(self):
+        #0
+        self.alpha_lon_accel_max_min = 0.0
+        self.alpha_lon_accel_max_max = 10.0
+        # 1
+        self.alpha_lon_brake_max_min = 6
+        self.alpha_lon_brake_max_max = 20.0
+        # 2
+        self.alpha_lon_brake_min_min = 3.5
+        self.alpha_lon_brake_min_max = 6.0
+        # 3
+        self.alpha_lon_brake_min_correct_min = 0.0
+        self.alpha_lon_brake_min_correct_max = 3.5
+        # 4
+        self.alpha_lat_accel_max_min = 0.0
+        self.alpha_lat_accel_max_max = 2.0
+        # 5
+        self.alpha_lat_brake_min_min = 0.0
+        self.alpha_lat_brake_min_max = 2.0
+        # 6
+        self.lateral_fluctuation_margin_min = 0.0
+        self.lateral_fluctuation_margin_max = 0.001
+        # 7
+        self.response_time_min = 0.01
+        self.response_time_max = 5.0
 
-    def __str__(self):
-        return ('X = (%.3f, %.3f)' % (self.alpha_lon_accel_max, self.alpha_lon_brake_max)) 
-                                                                        #self.alpha_lon_brake_min,
-                                                                        #self.alpha_lon_brake_min_correct, 
-                                                                        #self.alpha_lat_accel_max, 
-                                                                        #self.alpha_lat_brake_min, 
-                                                                        #self.lateral_fluctuation_margin, 
-                                                                        #self.response_time))
+    def getInit(self, names, **kwargs):
+        x = np.array([])
+        space = np.empty((0,2))
 
+        for name in names:
+            x = np.append(x, kwargs[name])
 
+            val_min = getattr(self, (name + '_min'))
+            val_max = getattr(self, (name + '_max'))
+            space = np.append(space, np.array([[val_min, val_max]]), axis=0)
+        return x, space
+# ==============================================================================
+def print_dynamics(rss_dynamics):
+            print('************************')
+            print('RSS DYANMICS:')
+            print('Lon accel max: %.3f' % rss_dynamics.alpha_lon.accel_max.value)
+            print('Lon brake max: %.3f' % rss_dynamics.alpha_lon.brake_max.value)
+            print('Lon brake min: %.3f' % rss_dynamics.alpha_lon.brake_min.value)
+            print('Lon brake min correct: %.3f' % rss_dynamics.alpha_lon.brake_min_correct.value)
+            #
+            print('Lat accel max: %.3f' % rss_dynamics.alpha_lat.accel_max.value)
+            print('Lat brake min: %.3f' % rss_dynamics.alpha_lat.brake_min.value)
+            #
+            print('Lat fluct mar: %.3f' % rss_dynamics.lateral_fluctuation_margin.value)
+            print('Response time: %.3f' % rss_dynamics.response_time.value)
+            print('************************')
+            
 # ==============================================================================
 # -- RssSensor --------------------------------------------------------
 # ==============================================================================
@@ -58,31 +107,27 @@ class RssSensor(object):
         self.sensor.visualize_results = True
         self.sensor.listen(lambda event: RssSensor._on_rss_response(weak_self, event))
         
-        def print_dynamics(rss_dynamics):
-            print('************************')
-            print('RSS DYANMICS:')
-            print('Lon accel max: %.3f' % rss_dynamics.alpha_lon.accel_max.value)
-            print('Lon break max: %.3f' % rss_dynamics.alpha_lon.brake_max.value)
-            print('Lon break min: %.3f' % rss_dynamics.alpha_lon.brake_min.value)
-            print('Lon break min correct: %.3f' % rss_dynamics.alpha_lon.brake_min_correct.value)
-            #
-            print('Lat accel max: %.3f' % rss_dynamics.alpha_lat.accel_max.value)
-            print('Lat break min: %.3f' % rss_dynamics.alpha_lat.brake_min.value)
-            #
-            print('Lat fluct mar: %.3f' % rss_dynamics.lateral_fluctuation_margin.value)
-            print('Response time: %.3f' % rss_dynamics.response_time.value)
-            print('************************')
-
         def set_parameters(rss_dynamics, rss_params):
-            rss_dynamics.alpha_lon.accel_max =         carla.Acceleration(rss_params.alpha_lon_accel_max)
-            rss_dynamics.alpha_lon.brake_max =         carla.Acceleration(rss_params.alpha_lon_brake_max)
-            rss_dynamics.alpha_lon.brake_min =         carla.Acceleration(8.0)
-            #rss_dynamics.alpha_lon.brake_min_correct = carla.Acceleration(rss_params.alpha_lon_brake_min_correct)
-            #rss_dynamics.alpha_lat.accel_max =         carla.Acceleration(rss_params.alpha_lat_accel_max)
-            #rss_dynamics.alpha_lat.brake_min =         carla.Acceleration(rss_params.alpha_lat_brake_min)
-            #rss_dynamics.lateral_fluctuation_margin =  carla.Distance(rss_params.lateral_fluctuation_margin)
-            #rss_dynamics.response_time =               carla.Duration(rss_params.response_time)     
-            rss_dynamics.response_time =               carla.Duration(0.1)     
+            for key, value in rss_params.items(): 
+                if (key == 'alpha_lon_accel_max'):
+                    rss_dynamics.alpha_lon.accel_max = carla.Acceleration(value)
+                elif (key == 'alpha_lon_brake_max'):
+                    rss_dynamics.alpha_lon.brake_max = carla.Acceleration(value)
+                elif (key == 'alpha_lon_brake_min'):
+                    rss_dynamics.alpha_lon.brake_min = carla.Acceleration(value)
+                elif (key == 'alpha_lon_brake_min_correct'):
+                    rss_dynamics.alpha_lon.brake_min_correct = carla.Acceleration(value)
+                elif (key == 'alpha_lat_accel_max'):
+                    rss_dynamics.alpha_lat.accel_max = carla.Acceleration(value)
+                elif (key =='alpha_lat_brake_min'):
+                    rss_dynamics.alpha_lat.brake_min = carla.Acceleration(value)
+                elif (key =='lateral_fluctuation_margin'):
+                    rss_dynamics.lateral_fluctuation_margin = carla.Distance(value)
+                elif (key =='response_time'):
+                    rss_dynamics.response_time = carla.Duration(value)     
+                else:
+                    print('WRONG RSS PARAM LABEL')
+                    exit()
             return rss_dynamics
 
         rss_dynamics = set_parameters(self.sensor.ego_vehicle_dynamics, self.rss_params)
@@ -101,3 +146,4 @@ class RssSensor(object):
         self.lat_response_left = response.lateral_response_left
         self.acceleration_restriction = response.acceleration_restriction
         self.ego_velocity = response.ego_velocity
+
