@@ -112,6 +112,7 @@ class RssLVDAD(FollowLeadingVehicle):
         seq.add_child(start_transform)
         seq.add_child(parallel_drive)
         seq.add_child(ActorDestroy(self.other_actors[0]))
+        seq.add_child(ActorDestroy(self.ego_vehicles[0]))
 
         return seq
 
