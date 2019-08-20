@@ -21,9 +21,12 @@ from tools import robustness
 sys.path.append(os.getenv('ROOT_SCENARIO_RUNNER'))
 from scenario_runner_extension.rss_aux import defineRssParams
 from scenario_runner_extension.rss_aux import RssParamsInit
-from scenario_runner_extension.rss_follow_leading_vehicle import RssFollowLeadingVehicle
-from scenario_runner_extension.rss_follow_leading_vehicle import RssLVDAD 
+from scenario_runner_extension.rss_config_parser import parse_rss_scenario_configuration 
 
+from scenario_runner_extension.rss_opposite_vehicle_taking_priority import RssOppositeVehicleRunningRedLight
+from scenario_runner_extension.rss_follow_leading_vehicle import RssLVDAD
+from scenario_runner_extension.rss_follow_leading_vehicle import RssFollowLeadingVehicle
+from scenario_runner_extension.test_scenario import RssTestScenario 
 
 RES_FOLDER = '../results-' + time.strftime("%d-%H-%M-%S")
 if not os.path.exists(RES_FOLDER):
@@ -47,15 +50,6 @@ from srunner.scenarios.signalized_junction_left_turn import *
 from srunner.scenarios.signalized_junction_right_turn import *
 from srunner.scenarios.basic_scenario import BasicScenario
 from srunner.tools.config_parser import *
-
-from srunner.scenarios.follow_leading_vehicle import FollowLeadingVehicle
-import math
-
-
-def get_transform(vehicle_location, angle, pitch, d=6.4):
-    a = math.radians(angle)
-    location = carla.Location(d * math.cos(a), d * math.sin(a), 2.0) + vehicle_location
-    return carla.Transform(location, carla.Rotation(yaw=180 + angle, pitch=pitch))
 
 class ScenarioRunner(object):
 
@@ -113,6 +107,16 @@ class ScenarioRunner(object):
         if self.world is not None:
             del self.world
 
+    def get_scenario_class_or_fail(self, scenario):
+        """
+        Get scenario class by scenario name
+        If scenario is not supported or not found, exit script
+        """
+        if scenario in globals():
+            return globals()[scenario]
+        print("Scenario '{}' not supported ... Exiting".format(scenario))
+        sys.exit(-1)
+
     def cleanup(self, ego=False):
         """
         Remove and destroy all actors
@@ -130,6 +134,11 @@ class ScenarioRunner(object):
                     self.ego_vehicles[i].destroy()
                 self.ego_vehicles[i] = None
         self.ego_vehicles = []
+
+    def prepare_camera(self, config):
+        spectator = self.world.get_spectator()
+        spectator.set_transform(config.camera.transform)
+
 
     def prepare_ego_vehicles(self, config, wait_for_ego_vehicles=False):
         """
@@ -232,25 +241,17 @@ class ScenarioRunner(object):
     def simulate(self, config, args, rss_params):
         file = open(self.filename_traj, 'wb')  
         file.close()
-
         result = False
+        scenario_class = self.get_scenario_class_or_fail(config.type)
+
         while not result:
             try:
                 self.load_world(args, config.town)
                 self.manager = ScenarioManager(self.world, args.debug)   
                 CarlaActorPool.set_world(self.world)
                 self.prepare_ego_vehicles(config)
-                spectator = self.world.get_spectator()
-
-                if (args.scenario == 'FollowLeadingVehicle_1'):
-                    spectator.set_transform(get_transform(carla.Location(210, 133, 120), 90, -90)) # get_transform(self.ego_vehicles[0].get_location(), 180, -15)
-                    scenario = RssFollowLeadingVehicle(self.world, rss_params, self.filename_traj, self.ego_vehicles, config, args.randomize, args.debug)
-                elif (args.scenario == 'lvdad'):
-                    spectator.set_transform(get_transform(carla.Location(-2, 180, 170), 180, -90))
-                    scenario = RssLVDAD(self.world, rss_params, self.filename_traj, self.ego_vehicles, config, args.randomize, args.debug)
-                else:
-                    sys.exit('Wrong name of the scenario') # exits the program
-                
+                self.prepare_camera(config)    
+                scenario = scenario_class(self.world, rss_params, self.filename_traj, self.ego_vehicles, config, args.randomize, args.debug)
                 result = True
             except Exception as exception:
                 print("The scenario cannot be loaded")
@@ -265,9 +266,8 @@ class ScenarioRunner(object):
 
 
     def run(self, args):
-        scenario_config_file = find_scenario_config(args.scenario, args.configFile) # xml file
-        
-        scenario_configurations = parse_scenario_configuration(scenario_config_file, args.scenario)
+        scenario_config_file = find_scenario_config(args.scenario, args.configFile) # xml file 
+        scenario_configurations = parse_rss_scenario_configuration(scenario_config_file, args.scenario)
         config = scenario_configurations[0] # since we work only with one scenario!
 
         num_simult_runs = 1
@@ -329,8 +329,10 @@ if __name__ == '__main__':
     ARGUMENTS.filename_traj = TRAJ_FILENAME
     ARGUMENTS.configFile = os.path.join(os.getcwd(), 'rss.xml') # do not change this line
     # but do change this scenario:
-    #ARGUMENTS.scenario = 'FollowLeadingVehicle_1'
-    ARGUMENTS.scenario = 'lvdad'
+    #ARGUMENTS.scenario = 'Rss_FollowLeadingVehicle_1'
+    ARGUMENTS.scenario = 'Rss_lvdad'
+    #ARGUMENTS.scenario = 'Rss_testScenario'
+    #ARGUMENTS.scenario = 'Rss_OppositeVehicleRunningRedLight011'
 
     
     ARGUMENTS.reloadWorld = True

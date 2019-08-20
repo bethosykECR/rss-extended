@@ -1,6 +1,21 @@
 <?xml version="1.0"?>
 <scenarios>
-    <scenario name="lvdad" type="FollowLeadingVehicle" town="Town01">
+    <scenario name="Rss_lvdad" type="RssLVDAD" town="Town01">
         <ego_vehicle x="-2" y="15" z="0.5" yaw="90" model="vehicle.lincoln.mkz2017" />
+        <camera x="0" y="170" z="170" yaw="0" pitch="-90" />
+    </scenario>
+    <scenario name="Rss_OppositeVehicleRunningRedLight011" type="RssOppositeVehicleRunningRedLight" town="Town01">
+        <ego_vehicle x="126.4" y="55.2" z="1" yaw="180" model="vehicle.lincoln.mkz2017" />
+        <other_actor x="93" y="81" z="1" yaw="270" model="vehicle.tesla.model3" />
+        <camera x="110.4" y="50" z="60" yaw="0" pitch="-90" />
+    </scenario>
+    <scenario name="Rss_FollowLeadingVehicle_1" type="RssFollowLeadingVehicle" town="Town01">
+        <ego_vehicle x="107" y="133" z="0.5" yaw="0" model="vehicle.lincoln.mkz2017" />
+        <camera x="215" y="120" z="120" yaw="-90" pitch="-90" />
+    </scenario>
+     <scenario name="Rss_testScenario" type="RssTestScenario" town="Town01">
+        <ego_vehicle x="-2" y="15" z="0.5" yaw="90" model="vehicle.lincoln.mkz2017" />
+        <camera x="0" y="170" z="170" yaw="0" pitch="-90" />
     </scenario>
 </scenarios>
+
