@@ -2,11 +2,11 @@ import carla
 import py_trees
 
 from scenario_runner_extension.rss_behavior import RssBasicAgentBehavior
-from scenario_runner_extension.rss_behavior import WaitForSeconds
 from scenario_runner_extension.rss_criteria import RssTest
 
 from srunner.scenarios.follow_leading_vehicle import FollowLeadingVehicle
 from srunner.scenariomanager.atomic_scenario_behavior import *
+from srunner.scenariomanager.timer import TimeOut
 from srunner.scenariomanager.atomic_scenario_criteria import *
 from srunner.tools.scenario_helper import get_waypoint_in_distance
 
@@ -97,7 +97,7 @@ class RssFollowLeadingVehicle(FollowLeadingVehicle):
         # Build behavior tree
         sequence = py_trees.composites.Sequence("Sequence Behavior")
         sequence.add_child(start_transform)
-        sequence.add_child(WaitForSeconds(3))
+        sequence.add_child(TimeOut(3))
         sequence.add_child(parallel_drive)
         sequence.add_child(ActorDestroy(self.other_actors[0]))
 
@@ -165,11 +165,11 @@ class RssLVDAD(FollowLeadingVehicle):
         #------------------------------------
         p2 = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
         p2.add_child(WaypointFollower(self.other_actors[0], target_v_kmh))
-        p2.add_child(WaitForSeconds(wait_time))
+        p2.add_child(TimeOut(wait_time))
         #------------------------------------
         p3 = StopVehicle(self.other_actors[0], braking_value_soft)
         #-------------------------
-        p4 = WaitForSeconds(wait_time)
+        p4 = TimeOut(wait_time)
         #------------------------------------
         p5 = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
         p5.add_child(WaypointFollower(self.other_actors[0], target_v_kmh))
@@ -177,11 +177,11 @@ class RssLVDAD(FollowLeadingVehicle):
         #------------------------------------
         p6 = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
         p6.add_child(WaypointFollower(self.other_actors[0], target_v_kmh))
-        p6.add_child(WaitForSeconds(wait_time))
+        p6.add_child(TimeOut(wait_time))
         #------------------------------------
         p7 = StopVehicle(self.other_actors[0], braking_value_hard)
         #------------------------------------
-        p8 = WaitForSeconds(float('inf'))
+        p8 = TimeOut(float('inf'))
         #------------------------------------
         pov_driving = py_trees.composites.Sequence()
         pov_driving.add_child(p1)
