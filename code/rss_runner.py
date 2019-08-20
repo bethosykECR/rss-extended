@@ -4,52 +4,34 @@ import traceback
 import argparse
 from argparse import RawTextHelpFormatter
 from datetime import datetime
-import importlib
-import inspect
-
 import carla
-import numpy as np
 import sys
 import os
 import time
 
-from tools import dist_aux
-from tools import other_aux
+sys.path.append(os.getenv('ROOT_SCENARIO_RUNNER'))
+from srunner.scenariomanager.carla_data_provider import CarlaActorPool, CarlaDataProvider
+from srunner.scenariomanager.scenario_manager import ScenarioManager
+from srunner.tools.config_parser import find_scenario_config
+#
 from tools import annealing
 from tools import robustness
 
-sys.path.append(os.getenv('ROOT_SCENARIO_RUNNER'))
 from scenario_runner_extension.rss_aux import defineRssParams
 from scenario_runner_extension.rss_aux import RssParamsInit
 from scenario_runner_extension.rss_config_parser import parse_rss_scenario_configuration 
 
-from scenario_runner_extension.rss_opposite_vehicle_taking_priority import RssOppositeVehicleRunningRedLight
-from scenario_runner_extension.rss_follow_leading_vehicle import RssLVDAD
-from scenario_runner_extension.rss_follow_leading_vehicle import RssFollowLeadingVehicle
-from scenario_runner_extension.test_scenario import RssTestScenario 
+from scenarios.rss_opposite_vehicle_taking_priority import RssOppositeVehicleRunningRedLight
+from scenarios.rss_lvdad import RssLVDAD
+from scenarios.rss_follow_leading_vehicle import RssFollowLeadingVehicle
+from scenarios.test_scenario import RssTestScenario 
 
 RES_FOLDER = '../results-' + time.strftime("%d-%H-%M-%S")
 if not os.path.exists(RES_FOLDER):
     os.makedirs(RES_FOLDER)
-
 TRAJ_FILENAME = os.path.join(RES_FOLDER, 'trajectory.csv')
 
-from srunner.scenariomanager.carla_data_provider import *
-from srunner.scenariomanager.scenario_manager import ScenarioManager
-from srunner.scenarios.background_activity import *
-from srunner.scenarios.control_loss import *
-from srunner.scenarios.follow_leading_vehicle import *
-from srunner.scenarios.maneuver_opposite_direction import *
-from srunner.scenarios.master_scenario import *
-from srunner.scenarios.no_signal_junction_crossing import *
-from srunner.scenarios.object_crash_intersection import *
-from srunner.scenarios.object_crash_vehicle import *
-from srunner.scenarios.opposite_vehicle_taking_priority import *
-from srunner.scenarios.other_leading_vehicle import *
-from srunner.scenarios.signalized_junction_left_turn import *
-from srunner.scenarios.signalized_junction_right_turn import *
-from srunner.scenarios.basic_scenario import BasicScenario
-from srunner.tools.config_parser import *
+
 
 class ScenarioRunner(object):
 
