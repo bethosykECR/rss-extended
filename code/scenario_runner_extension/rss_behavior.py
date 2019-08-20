@@ -38,34 +38,3 @@ class RssBasicAgentBehavior(AtomicBehavior):
         self._actor.apply_control(self._control)
         super(RssBasicAgentBehavior, self).terminate(new_status)
 
-class WaitForSeconds(AtomicBehavior):
-
-    """
-    This class will wait and do nothing for given amount of time 
-    """
-
-    def __init__(self, duration, name="WaitForSeconds"):
-        """
-        Setup actor
-        """
-        super(WaitForSeconds, self).__init__(name)
-        self.logger.debug("%s.__init__()" % (self.__class__.__name__))
-        self._duration = duration
-        self._start_time = 0
-
-    def initialise(self):
-        self._start_time = GameTime.get_time()
-        super(WaitForSeconds, self).initialise()
-
-    def update(self):
-
-        new_status = py_trees.common.Status.RUNNING
-
-        #print('in WaitForSeconds for %.1fs' % (GameTime.get_time() - self._start_time))
-        if GameTime.get_time() - self._start_time > self._duration:
-            new_status = py_trees.common.Status.SUCCESS
-            #print('I have waited for %.1fs' % self._duration)
-
-        self.logger.debug("%s.update()[%s->%s]" % (self.__class__.__name__, self.status, new_status))
-
-        return new_status
