@@ -39,7 +39,6 @@ export ROOT_SCENARIO_RUNNER=path/to/your/scenario_runner
 - Change carla server with required flags for this setting from carla_folder/PythonAPI/util: 
 ```
 ./config.py -m Town01 --fps 20
-
 ```
 - Run rss_runner.py from RGT_folder:
 ```
