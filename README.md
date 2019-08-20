@@ -12,6 +12,12 @@ make PythonAPI.rss
 make package
 
 ```
+- If there is an error "not compliant with RSS version, please do PythonAPI.rss" do
+```
+make clean
+make PythonAPI.rss
+```
+
 - Define your PYTHONPATH:
 ```
 export PYTHONPATH=path/to/your/carla/dist/.egg and path/to/your/carla/PythonAPI/carla
@@ -32,7 +38,7 @@ export ROOT_SCENARIO_RUNNER=path/to/your/scenario_runner
 
 - Change carla server with required flags for this setting from carla_folder/PythonAPI/util: 
 ```
-./config.py -m Town03 --fps 20
+./config.py -m Town01 --fps 20
 
 ```
 - Run rss_runner.py from RGT_folder:
