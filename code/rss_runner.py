@@ -24,7 +24,6 @@ from scenario_runner_extension.rss_config_parser import parse_rss_scenario_confi
 from scenarios.rss_opposite_vehicle_taking_priority import RssOppositeVehicleRunningRedLight
 from scenarios.rss_lvdad import RssLVDAD
 from scenarios.rss_follow_leading_vehicle import RssFollowLeadingVehicle
-from scenarios.test_scenario import RssTestScenario 
 
 RES_FOLDER = '../results-' + time.strftime("%d-%H-%M-%S")
 if not os.path.exists(RES_FOLDER):

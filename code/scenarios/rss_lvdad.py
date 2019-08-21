@@ -4,28 +4,31 @@ import py_trees
 from scenario_runner_extension.rss_behavior import RssBasicAgentBehavior
 from scenario_runner_extension.rss_criteria import RssTest
 
-from srunner.scenarios.follow_leading_vehicle import FollowLeadingVehicle
+from srunner.scenarios.basic_scenario import BasicScenario
 from srunner.scenariomanager.atomic_scenario_behavior import *
 from srunner.scenariomanager.timer import TimeOut
 from srunner.scenariomanager.atomic_scenario_criteria import *
 from srunner.tools.scenario_helper import get_waypoint_in_distance
 
-class RssLVDAD(FollowLeadingVehicle):
+class RssLVDAD(BasicScenario):
 
     def __init__(self, world, rss_params, filename, ego_vehicles, config, randomize=False, debug_mode=False, criteria_enable=True):
         
         self._rss_params = rss_params
         self._ego_target_speed = 40
         self._first_vehicle_speed = 40
+        self._first_vehicle_location = 25
         self._filename = filename
         self.timeout=45 # seconds
-        super(RssLVDAD, self).__init__(world, 
-                                                     ego_vehicles, 
-                                                     config,
-                                                     randomize,
-                                                     debug_mode,
-                                                     criteria_enable,
-                                                     self.timeout)
+        self._reference_waypoint = CarlaDataProvider.get_map().get_waypoint(config.trigger_points[0].location)
+        self._other_actor_transform = None
+
+        super(RssLVDAD, self).__init__("LVDAD",
+                                                   ego_vehicles,
+                                                   config,
+                                                   world,
+                                                   debug_mode,
+                                                   criteria_enable=criteria_enable)
 
     def _initialize_actors(self, config):
 

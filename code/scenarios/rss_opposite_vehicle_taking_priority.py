@@ -20,7 +20,6 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
         self._rss_params = rss_params
         self._filename = filename
         self._ego_target_speed = 25
-        self._other_actor_target_velocity = 30
         self.timeout=30
         super(RssOppositeVehicleRunningRedLight, self).__init__(world, 
                                                      ego_vehicles, 
@@ -29,6 +28,7 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
                                                      debug_mode,
                                                      criteria_enable,
                                                      self.timeout)
+        # attr self._other_actor_target_velocity is defined in parent OppositeVehicleRunningRedLight
 
     def _setup_scenario_trigger(self, config):
         return StandStill(self.ego_vehicles[0], name="StandStill")
@@ -80,8 +80,8 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
         #pov_driving.add_child(wait)
         pov_driving.add_child(TimeOut(float('inf')))
 
-        #intersection_location = carla.Location(92.4, 30.0, 0.5) 
-        _, target_waypoint = generate_target_waypoint_list(CarlaDataProvider.get_map().get_waypoint(self.ego_vehicles[0].get_location()), -1)
+        ego_turn = -1 # turn left
+        _, target_waypoint = generate_target_waypoint_list(CarlaDataProvider.get_map().get_waypoint(self.ego_vehicles[0].get_location()), ego_turn)
 
         # Generating waypoint list till next intersection
         wp_choice = target_waypoint.next(20.0)
