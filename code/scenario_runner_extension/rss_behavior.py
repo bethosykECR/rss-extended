@@ -5,12 +5,9 @@ from scenario_runner_extension.rss_basic_agent import RssBasicAgent
 
 from srunner.scenariomanager.atomic_scenario_behavior import AtomicBehavior, calculate_distance
 from srunner.scenariomanager.carla_data_provider import CarlaDataProvider
-
 from srunner.scenariomanager.timer import GameTime
 
 class RssBasicAgentBehavior(AtomicBehavior):
-
-    _acceptable_target_distance = 2
 
     def __init__(self, rss_params, actor, target_location, name="RssBasicAgentBehavior"):
         super(RssBasicAgentBehavior, self).__init__(name)            
@@ -22,14 +19,8 @@ class RssBasicAgentBehavior(AtomicBehavior):
 
     def update(self):
         new_status = py_trees.common.Status.RUNNING
-
-        #location = CarlaDataProvider.get_location(self._actor)
-        #if calculate_distance(location, self._target_location) < self._acceptable_target_distance:
-        #    print('RSS reached the goal is success')
-
         self._control = self._agent.run_step()
         self._actor.apply_control(self._control)
-
         return new_status
 
     def terminate(self, new_status):
@@ -37,4 +28,3 @@ class RssBasicAgentBehavior(AtomicBehavior):
         self._control.brake = 0.0
         self._actor.apply_control(self._control)
         super(RssBasicAgentBehavior, self).terminate(new_status)
-

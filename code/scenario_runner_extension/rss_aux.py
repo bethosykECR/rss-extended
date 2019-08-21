@@ -47,7 +47,7 @@ class RssParamsInit:
         self.lateral_fluctuation_margin_min = 0.0
         self.lateral_fluctuation_margin_max = 0.001
         # 7
-        self.response_time_min = 0.01
+        self.response_time_min = 0.05
         self.response_time_max = 5.0
 
     def getInit(self, names, **kwargs):

@@ -16,7 +16,7 @@ class RssLVDAD(FollowLeadingVehicle):
         
         self._rss_params = rss_params
         self._filename = filename
-        self.timeout=100 # seconds
+        self.timeout=45 # seconds
         super(RssLVDAD, self).__init__(world, 
                                                      ego_vehicles, 
                                                      config,
