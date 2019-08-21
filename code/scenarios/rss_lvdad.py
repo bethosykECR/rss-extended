@@ -15,6 +15,8 @@ class RssLVDAD(FollowLeadingVehicle):
     def __init__(self, world, rss_params, filename, ego_vehicles, config, randomize=False, debug_mode=False, criteria_enable=True):
         
         self._rss_params = rss_params
+        self._ego_target_speed = 40
+        self._first_vehicle_speed = 40
         self._filename = filename
         self.timeout=45 # seconds
         super(RssLVDAD, self).__init__(world, 
@@ -100,7 +102,7 @@ class RssLVDAD(FollowLeadingVehicle):
         endcondition.add_child(endcondition_part2)
 
         ego_driving = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
-        ego_driving.add_child(RssBasicAgentBehavior(self._rss_params, self.ego_vehicles[0], intersection_location))
+        ego_driving.add_child(RssBasicAgentBehavior(self._rss_params, self.ego_vehicles[0], self._ego_target_speed, intersection_location))
         ego_driving.add_child(endcondition)
         ##############################################
 

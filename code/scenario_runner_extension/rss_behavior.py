@@ -9,9 +9,9 @@ from srunner.scenariomanager.timer import GameTime
 
 class RssBasicAgentBehavior(AtomicBehavior):
 
-    def __init__(self, rss_params, actor, target_location, name="RssBasicAgentBehavior"):
+    def __init__(self, rss_params, actor, target_speed, target_location, name="RssBasicAgentBehavior"):
         super(RssBasicAgentBehavior, self).__init__(name)            
-        self._agent = RssBasicAgent(actor, rss_params)  # pylint: disable=undefined-variable
+        self._agent = RssBasicAgent(actor, target_speed, rss_params)  # pylint: disable=undefined-variable
         self._agent.set_destination((target_location.x, target_location.y, target_location.z))
         self._control = carla.VehicleControl()
         self._actor = actor

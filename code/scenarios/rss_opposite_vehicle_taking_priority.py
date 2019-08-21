@@ -19,6 +19,8 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
         
         self._rss_params = rss_params
         self._filename = filename
+        self._ego_target_speed = 25
+        self._other_actor_target_velocity = 30
         self.timeout=30
         super(RssOppositeVehicleRunningRedLight, self).__init__(world, 
                                                      ego_vehicles, 
@@ -33,7 +35,6 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
          
     def _create_behavior(self):
      
-        target_velocity = 30 #km/h
         crossing_point_dynamic = get_crossing_point(self.ego_vehicles[0])
 
         # start condition
@@ -52,20 +53,20 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
         # generating waypoints until intersection (target_waypoint)
 
         target_waypoint = generate_target_waypoint(CarlaDataProvider.get_map().get_waypoint(self.other_actors[0].get_location()), turn)
-        print(target_waypoint)
-        print('------------')
+        #print(target_waypoint)
+        #print('------------')
         # Generating waypoint list till next intersection
         wp_choice = target_waypoint.next(5.0)
         while len(wp_choice) == 1:
             target_waypoint = wp_choice[0]
-            print(target_waypoint)
+            #print(target_waypoint)
             plan.append((target_waypoint, RoadOption.LANEFOLLOW))
             wp_choice = target_waypoint.next(5.0)
-        print(wp_choice[0])
-        print(wp_choice[1])
+        #print(wp_choice[0])
+        #print(wp_choice[1])
 
         continue_driving = py_trees.composites.Parallel("ContinueDriving", policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
-        continue_driving.add_child(WaypointFollower(self.other_actors[0], target_velocity, plan=plan, avoid_collision=False))
+        continue_driving.add_child(WaypointFollower(self.other_actors[0], self._other_actor_target_velocity, plan=plan, avoid_collision=False))
         continue_driving.add_child(DriveDistance(self.other_actors[0], self._other_actor_distance, name="Distance"))
         continue_driving.add_child(TimeOut(10))
 
@@ -89,7 +90,9 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
 
         destination_location = target_waypoint.transform.location
         #print(destination_location)
-        ego_driving = RssBasicAgentBehavior(self._rss_params, self.ego_vehicles[0], destination_location)
+        ego_driving = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
+        ego_driving.add_child(RssBasicAgentBehavior(self._rss_params, self.ego_vehicles[0], self._ego_target_speed, destination_location))
+        ego_driving.add_child(InTriggerDistanceToLocation(self.ego_vehicles[0], destination_location, 15))
 
         # Build behavior tree
         parallel_drive = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)

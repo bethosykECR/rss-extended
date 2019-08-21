@@ -249,8 +249,6 @@ class ScenarioRunner(object):
 
     def run(self, args):
         scenario_config_file = find_scenario_config(args.scenario, args.configFile) # xml file 
-        scenario_configurations = parse_rss_scenario_configuration(scenario_config_file, args.scenario)
-        config = scenario_configurations[0] # since we work only with one scenario!
 
         num_simult_runs = 1
         nruns = 5000
@@ -274,6 +272,9 @@ class ScenarioRunner(object):
 
         ####################################        
         def ff(x):
+            scenario_configurations = parse_rss_scenario_configuration(scenario_config_file, args.scenario)
+            config = scenario_configurations[0] # since we work only with one scenario!
+
             rss_params = defineRssParams(x, search_names)
             rss_params['alpha_lon_brake_min_correct'] = 0.1
             print('RSS params: %s' % rss_params)
@@ -313,7 +314,6 @@ if __name__ == '__main__':
     # but do change this scenario:
     #ARGUMENTS.scenario = 'Rss_FollowLeadingVehicle_1'
     ARGUMENTS.scenario = 'Rss_lvdad'
-    #ARGUMENTS.scenario = 'Rss_testScenario'
     #ARGUMENTS.scenario = 'Rss_OppositeVehicleRunningRedLight011'
 
     

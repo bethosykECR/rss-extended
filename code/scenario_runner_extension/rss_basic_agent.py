@@ -4,10 +4,9 @@ from scenario_runner_extension.rss_aux import RssSensor
 
 
 class RssBasicAgent(BasicAgent):
-	def __init__(self, vehicle, rss_params):
+	def __init__(self, vehicle, target_speed, rss_params):
 		
-		self._target_speed = 40
-		super(RssBasicAgent, self).__init__(vehicle, self._target_speed)
+		super(RssBasicAgent, self).__init__(vehicle, target_speed)
 
 		self._rss_sensor = RssSensor(vehicle, rss_params)
 		self._restrictor = carla.RssRestrictor()

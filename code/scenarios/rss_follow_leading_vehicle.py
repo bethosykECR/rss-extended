@@ -16,6 +16,8 @@ class RssFollowLeadingVehicle(FollowLeadingVehicle):
         
         self._rss_params = rss_params
         self._filename = filename
+        self._ego_target_speed = 40
+        self._first_vehicle_speed = 40
         self.timeout=30
         super(RssFollowLeadingVehicle, self).__init__(world, 
                                                      ego_vehicles, 
@@ -79,7 +81,7 @@ class RssFollowLeadingVehicle(FollowLeadingVehicle):
 
         intersection_location = carla.Location(326, 133, 0.7)   
         ego_drives = py_trees.composites.Parallel("ego", policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
-        ego_drives.add_child(RssBasicAgentBehavior(self._rss_params, self.ego_vehicles[0], intersection_location))
+        ego_drives.add_child(RssBasicAgentBehavior(self._rss_params, self.ego_vehicles[0], self._ego_target_speed, intersection_location))
         ego_drives.add_child(endcondition)
 
 
