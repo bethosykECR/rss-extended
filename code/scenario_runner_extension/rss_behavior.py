@@ -3,7 +3,7 @@ import py_trees
 
 from scenario_runner_extension.rss_basic_agent import RssBasicAgent
 
-from srunner.scenariomanager.atomic_scenario_behavior import AtomicBehavior, calculate_distance
+from srunner.scenariomanager.scenarioatomics.atomic_behaviors import AtomicBehavior, calculate_distance
 from srunner.scenariomanager.carla_data_provider import CarlaDataProvider
 from srunner.scenariomanager.timer import GameTime
 

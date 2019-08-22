@@ -1,7 +1,7 @@
 import py_trees
 from tools import dist_aux
 from tools import other_aux
-from srunner.scenariomanager.atomic_scenario_criteria import Criterion
+from srunner.scenariomanager.scenarioatomics.atomic_criteria import Criterion
 import math
 
 class RssTest(Criterion):

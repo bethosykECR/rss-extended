@@ -12,7 +12,7 @@ import time
 sys.path.append(os.getenv('ROOT_SCENARIO_RUNNER'))
 from srunner.scenariomanager.carla_data_provider import CarlaActorPool, CarlaDataProvider
 from srunner.scenariomanager.scenario_manager import ScenarioManager
-from srunner.tools.config_parser import find_scenario_config
+from srunner.tools.scenario_config_parser import ScenarioConfigurationParser
 #
 from tools import annealing
 from tools import robustness
@@ -247,8 +247,8 @@ class ScenarioRunner(object):
         return rob
 
 
-    def run(self, args):
-        scenario_config_file = find_scenario_config(args.scenario, args.configFile) # xml file 
+    def run(self, args): 
+        scenario_config_file = ScenarioConfigurationParser.find_scenario_config(args.scenario, args.configFile) # xml file 
 
         num_simult_runs = 1
         nruns = 5000

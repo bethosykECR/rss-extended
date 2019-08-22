@@ -1,7 +1,7 @@
 import carla 
 import xml.etree.ElementTree as ET
-from srunner.tools.config_parser import ScenarioConfiguration
-from srunner.tools.config_parser import parse_scenario_configuration
+from srunner.scenarioconfigs.scenario_configuration import ScenarioConfiguration
+from srunner.tools.scenario_config_parser import ScenarioConfigurationParser
 
 
 class CameraConfiguration(object):
@@ -25,7 +25,7 @@ class RssScenarioConfiguration(ScenarioConfiguration):
 def parse_rss_scenario_configuration(scenario_config_file, scenario_name):
 
 	new_config = RssScenarioConfiguration()
-	scenario_configurations = parse_scenario_configuration(scenario_config_file, scenario_name)
+	scenario_configurations = ScenarioConfigurationParser.parse_scenario_configuration(scenario_config_file, scenario_name)
 	config = scenario_configurations[0]
 	new_config.name = config.name
 	new_config.town = config.town 

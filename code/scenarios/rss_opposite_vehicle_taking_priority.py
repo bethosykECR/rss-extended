@@ -5,9 +5,10 @@ from scenario_runner_extension.rss_behavior import RssBasicAgentBehavior
 from scenario_runner_extension.rss_criteria import RssTest
 
 from srunner.scenarios.opposite_vehicle_taking_priority import OppositeVehicleRunningRedLight
-from srunner.scenariomanager.atomic_scenario_behavior import *
+from srunner.scenariomanager.scenarioatomics.atomic_behaviors import *
+from srunner.scenariomanager.scenarioatomics.atomic_trigger_conditions import *
 from srunner.scenariomanager.timer import TimeOut
-from srunner.scenariomanager.atomic_scenario_criteria import *
+from srunner.scenariomanager.scenarioatomics.atomic_criteria import *
 from srunner.tools.scenario_helper import get_waypoint_in_distance
 from srunner.scenarios.basic_scenario import *
 from srunner.tools.scenario_helper import *
