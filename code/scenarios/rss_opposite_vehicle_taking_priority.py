@@ -84,7 +84,7 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
         _, target_waypoint = generate_target_waypoint_list(CarlaDataProvider.get_map().get_waypoint(self.ego_vehicles[0].get_location()), ego_turn)
 
         # Generating waypoint list till next intersection
-        wp_choice = target_waypoint.next(20.0)
+        wp_choice = target_waypoint.next(30.0)
         target_waypoint = wp_choice[0]
             
 

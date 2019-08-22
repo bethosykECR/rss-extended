@@ -24,6 +24,7 @@ from scenario_runner_extension.rss_config_parser import parse_rss_scenario_confi
 from scenarios.rss_opposite_vehicle_taking_priority import RssOppositeVehicleRunningRedLight
 from scenarios.rss_lvdad import RssLVDAD
 from scenarios.rss_follow_leading_vehicle import RssFollowLeadingVehicle
+from scenarios.rss_pov_unprotected_left import RssPovUnprotectedLeft
 
 RES_FOLDER = '../results-' + time.strftime("%d-%H-%M-%S")
 if not os.path.exists(RES_FOLDER):
@@ -314,6 +315,7 @@ if __name__ == '__main__':
     #ARGUMENTS.scenario = 'Rss_FollowLeadingVehicle_1'
     ARGUMENTS.scenario = 'Rss_lvdad'
     #ARGUMENTS.scenario = 'Rss_OppositeVehicleRunningRedLight011'
+    #ARGUMENTS.scenario = 'Rss_PovUnprotectedLeft'
 
     
     ARGUMENTS.reloadWorld = True
