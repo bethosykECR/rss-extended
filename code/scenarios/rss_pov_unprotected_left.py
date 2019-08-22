@@ -74,7 +74,10 @@ class RssPovUnprotectedLeft(BasicScenario):
             wp_choice = target_waypoint.next(5.0)
 
         pov_driving = py_trees.composites.Sequence("Sequence Behavior")
-        
+        pov_driving_intersection = py_trees.composites.Parallel("ContinueDriving", policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
+        pov_driving_intersection.add_child(WaypointFollower(self.other_actors[0], self._other_actor_target_velocity, plan=plan, avoid_collision=False))
+        pov_driving_intersection.add_child(DriveDistance(self.other_actors[0], 40, name="Distance"))
+        pov_driving.add_child(pov_driving_intersection)
         pov_driving.add_child(TimeOut(float('inf')))
         ########################
         parallel_drive = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
