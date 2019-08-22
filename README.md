@@ -3,8 +3,8 @@ RSS, CARLA, parameter exploration and magic.
 
 # Usage
 ## Installation
-- Get [CARLA 0.9.6](https://github.com/carla-simulator/carla/). Be sure the branch you chose supports RSS.
-- If you need to, build carla and PythonAPI with RSS flag 
+1. Get [CARLA 0.9.6](https://github.com/carla-simulator/carla/). Be sure the branch you chose supports RSS.
+2. Build CARLA and PythonAPI with RSS flag 
 ```
 make launch
 make package
@@ -17,17 +17,17 @@ make clean
 make PythonAPI.rss
 ```
 
-- Define your PYTHONPATH:
+3. Define your PYTHONPATH:
 ```
 export PYTHONPATH=path/to/your/carla/dist/.egg and path/to/your/carla/PythonAPI/carla
 ```
-- Install [Scenario Runner](https://github.com/carla-simulator/scenario_runner)  (compatible version  with CARLA 0.9.6)
-- Define the scenario_runner path:
+4. Install [Scenario Runner](https://github.com/carla-simulator/scenario_runner)  (compatible version  with CARLA 0.9.6)
+5. Define the scenario_runner path:
 
 ```
 export ROOT_SCENARIO_RUNNER=path/to/your/scenario_runner
 ```
-- Git clone this code
+6. Git clone this code
 
 ## Launch 
 Depending on your CARLA branch version the launching steps are as follows
