@@ -221,7 +221,7 @@ class ScenarioRunner(object):
 
 
     def simulate(self, config, args, rss_params):
-        file = open(self.filename_traj, 'wb')  
+        file = open(self.filename_traj, 'w')  
         file.close()
         result = False
         scenario_class = self.get_scenario_class_or_fail(config.type)
@@ -265,7 +265,7 @@ class ScenarioRunner(object):
         print('SearchSpace = %s\n' % searchSpace)
         #-------------------------------
         X0 =[]
-        for _ in xrange(num_simult_runs):
+        for _ in range(num_simult_runs):
             X0.append(x0)
         ####################################
 

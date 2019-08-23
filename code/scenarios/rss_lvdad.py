@@ -16,8 +16,8 @@ class RssLVDAD(BasicScenario):
     def __init__(self, world, rss_params, filename, ego_vehicles, config, randomize=False, debug_mode=False, criteria_enable=True):
         
         self._rss_params = rss_params
-        self._ego_target_speed = 40
-        self._first_vehicle_speed = 40
+        self._ego_target_speed = 10
+        self._first_vehicle_speed = 10
         self._first_vehicle_location = 25
         self._filename = filename
         self.timeout=45 # seconds
@@ -51,10 +51,7 @@ class RssLVDAD(BasicScenario):
         return StandStill(self.ego_vehicles[0], name="StandStill")
          
     def _create_behavior(self):
-
-        target_v_kmh = self._first_vehicle_speed
-        target_v_mps = target_v_kmh / 3.6
-        #
+       
         acceleration_value = 0.7 # how to turn into g?
         braking_value_soft = 0.1 #
         braking_value_hard = 0.6 #
@@ -65,11 +62,11 @@ class RssLVDAD(BasicScenario):
         start_transform = ActorTransformSetter(self.other_actors[0], self._other_actor_transform)
         #------------------------------------
         p1 = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
-        p1.add_child(WaypointFollower(self.other_actors[0], target_v_kmh))
-        p1.add_child(TriggerVelocity(self.other_actors[0], target_v_mps))
+        p1.add_child(WaypointFollower(self.other_actors[0], self._first_vehicle_speed))
+        p1.add_child(TriggerVelocity(self.other_actors[0], self._first_vehicle_speed))
         #------------------------------------
         p2 = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
-        p2.add_child(WaypointFollower(self.other_actors[0], target_v_kmh))
+        p2.add_child(WaypointFollower(self.other_actors[0], self._first_vehicle_speed))
         p2.add_child(TimeOut(wait_time))
         #------------------------------------
         p3 = StopVehicle(self.other_actors[0], braking_value_soft)
@@ -77,11 +74,11 @@ class RssLVDAD(BasicScenario):
         p4 = TimeOut(wait_time)
         #------------------------------------
         p5 = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
-        p5.add_child(WaypointFollower(self.other_actors[0], target_v_kmh))
-        p5.add_child(AccelerateToVelocity(self.other_actors[0], acceleration_value, target_v_mps))
+        p5.add_child(WaypointFollower(self.other_actors[0], self._first_vehicle_speed))
+        p5.add_child(AccelerateToVelocity(self.other_actors[0], acceleration_value, self._first_vehicle_speed))
         #------------------------------------
         p6 = py_trees.composites.Parallel(policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
-        p6.add_child(WaypointFollower(self.other_actors[0], target_v_kmh))
+        p6.add_child(WaypointFollower(self.other_actors[0], self._first_vehicle_speed))
         p6.add_child(TimeOut(wait_time))
         #------------------------------------
         p7 = StopVehicle(self.other_actors[0], braking_value_hard)

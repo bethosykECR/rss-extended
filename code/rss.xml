@@ -16,7 +16,7 @@
     </scenario>
     <scenario name="Rss_FollowLeadingVehicle_1" type="RssFollowLeadingVehicle" town="Town01">
         <ego_vehicle x="107" y="133" z="0.5" yaw="0" model="vehicle.audi.a2" />
-        <camera x="215" y="120" z="120" yaw="-90" pitch="-90" />
+        <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
     </scenario>
      <scenario name="Rss_testScenario" type="RssTestScenario" town="Town01">
         <ego_vehicle x="-2" y="15" z="0.5" yaw="90" model="vehicle.audi.a2" />

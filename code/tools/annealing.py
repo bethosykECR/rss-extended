@@ -118,7 +118,7 @@ def runFunc(compute_objective, currentSamples, initSpace, nruns, num_simult_runs
     accept_flags.append(np.full((1, num_simult_runs), True))
    
     Y = []
-    for i in xrange(num_simult_runs):
+    for i in range(num_simult_runs):
         #print(currentSamples[i])
         y = compute_objective(currentSamples[i])
         Y.append(y)
@@ -151,15 +151,15 @@ def runFunc(compute_objective, currentSamples, initSpace, nruns, num_simult_runs
                     writer.writerow(val)
 
     
-    saveToFile(0, locals(), RES_FOLDER, 'wb')
+    saveToFile(0, locals(), RES_FOLDER, 'w')
     
     tsched = 100.
-    for i in xrange(nruns):
+    for i in range(nruns):
         temperature = i*(1./tsched)
         #print ('Run: %d, Temperature: %.3f'% (i, temperature))
         nextSamples = []
         Z = []
-        for j in xrange(num_simult_runs):
+        for j in range(num_simult_runs):
             nextSamples.append(get_next_sample(currentSamples[j], initSpace))
             z = compute_objective(nextSamples[j])
             Z.append(z)
@@ -170,7 +170,7 @@ def runFunc(compute_objective, currentSamples, initSpace, nruns, num_simult_runs
         x_history[i+1,:,:]= np.copy(nextSamples)
 
         accepts = []
-        for j in xrange(num_simult_runs):
+        for j in range(num_simult_runs):
             accepts.append(accept_value(proposals[j],objectives[j],temperature))
             if accepts[j]:
                 currentSamples[j] = nextSamples[j]

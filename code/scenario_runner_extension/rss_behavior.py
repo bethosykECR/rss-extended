@@ -11,10 +11,13 @@ class RssBasicAgentBehavior(AtomicBehavior):
 
     def __init__(self, rss_params, actor, target_speed, target_location, name="RssBasicAgentBehavior"):
         super(RssBasicAgentBehavior, self).__init__(name)            
-        self._agent = RssBasicAgent(actor, target_speed, rss_params)  # pylint: disable=undefined-variable
+        self._target_speed = target_speed * 3.6  # Note: Conversion from m/s to km/h required
+        self._actor = actor
+        self._rss_params = rss_params
+        self._agent = RssBasicAgent(self._actor, self._target_speed, self._rss_params)  # pylint: disable=undefined-variable
+
         self._agent.set_destination((target_location.x, target_location.y, target_location.z))
         self._control = carla.VehicleControl()
-        self._actor = actor
         self._target_location = target_location
 
     def update(self):

@@ -17,7 +17,7 @@ class RssFollowLeadingVehicle(FollowLeadingVehicle):
         
         self._rss_params = rss_params
         self._filename = filename
-        self._ego_target_speed = 40
+        self._ego_target_speed = 10
         self._ego_destination = carla.Location(326, 133, 0.7)
         self.timeout=30
         super(RssFollowLeadingVehicle, self).__init__(world, 

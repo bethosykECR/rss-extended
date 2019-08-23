@@ -20,7 +20,7 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
         
         self._rss_params = rss_params
         self._filename = filename
-        self._ego_target_speed = 25
+        self._ego_target_speed = 10
         self.timeout=30
         super(RssOppositeVehicleRunningRedLight, self).__init__(world, 
                                                      ego_vehicles, 

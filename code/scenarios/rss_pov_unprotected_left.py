@@ -18,8 +18,8 @@ class RssPovUnprotectedLeft(BasicScenario):
     def __init__(self, world, rss_params, filename, ego_vehicles, config, randomize=False, debug_mode=False, criteria_enable=True):
         self._rss_params = rss_params
         self._filename = filename
-        self._ego_target_speed = 40
-        self._other_actor_target_velocity = 35 # Target velocity of other vehicle
+        self._ego_target_speed = 10
+        self._other_actor_target_velocity = 10 # Target velocity of other vehicle
         self.timeout=30
         super(RssPovUnprotectedLeft, self).__init__("PovUnprotectedLeft", ego_vehicles, config, world, debug_mode, criteria_enable=criteria_enable)
 
