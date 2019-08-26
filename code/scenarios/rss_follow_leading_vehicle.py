@@ -4,45 +4,45 @@ import py_trees
 from scenario_runner_extension.rss_behavior import RssBasicAgentBehavior
 from scenario_runner_extension.rss_criteria import RssTest
 
-from srunner.scenarios.follow_leading_vehicle import FollowLeadingVehicle
+from srunner.scenarios.basic_scenario import BasicScenario
 from srunner.scenariomanager.scenarioatomics.atomic_behaviors import *
 from srunner.scenariomanager.scenarioatomics.atomic_trigger_conditions import *
 from srunner.scenariomanager.timer import TimeOut
 from srunner.scenariomanager.scenarioatomics.atomic_criteria import *
-from srunner.tools.scenario_helper import get_waypoint_in_distance
 
-class RssFollowLeadingVehicle(FollowLeadingVehicle):
+class RssFollowLeadingVehicle(BasicScenario):
 
     def __init__(self, world, rss_params, filename, ego_vehicles, config, randomize=False, debug_mode=False, criteria_enable=True):
         
         self._rss_params = rss_params
+        self._ego_target_speed = config.ego_vehicles[0].target_speed
+        self._other_actor_target_speed = config.other_actors[0].target_speed
+        self._target = config.target.transform.location
         self._filename = filename
-        self._ego_target_speed = 10
-        self._ego_destination = carla.Location(326, 133, 0.7)
         self.timeout=30
-        super(RssFollowLeadingVehicle, self).__init__(world, 
-                                                     ego_vehicles, 
-                                                     config,
-                                                     randomize,
-                                                     debug_mode,
-                                                     criteria_enable,
-                                                     self.timeout)
+        self._other_actor_stop_in_front_intersection = 20
+        self._other_actor_max_brake = 1.0
+
+        super(RssFollowLeadingVehicle, self).__init__("RssFollowLeadingVehicle",
+                                                   ego_vehicles,
+                                                   config,
+                                                   world,
+                                                   debug_mode,
+                                                   criteria_enable=criteria_enable)
 
     def _initialize_actors(self, config):
-
-        first_vehicle_waypoint, _ = get_waypoint_in_distance(self._reference_waypoint, self._first_vehicle_location)
-        self._other_actor_transform = carla.Transform(
-            carla.Location(first_vehicle_waypoint.transform.location.x,
-                           first_vehicle_waypoint.transform.location.y,
-                           first_vehicle_waypoint.transform.location.z),
-            first_vehicle_waypoint.transform.rotation)
+        """
+        Custom initialization
+        """
+        self._other_actor_transform = config.other_actors[0].transform
         first_vehicle_transform = carla.Transform(
-            carla.Location(self._other_actor_transform.location.x,
-                           self._other_actor_transform.location.y,
-                           self._other_actor_transform.location.z),
-            self._other_actor_transform.rotation)
-        first_vehicle = CarlaActorPool.request_new_actor('vehicle.nissan.patrol', first_vehicle_transform)
+            carla.Location(config.other_actors[0].transform.location.x,
+                           config.other_actors[0].transform.location.y,
+                           config.other_actors[0].transform.location.z),
+            config.other_actors[0].transform.rotation)
+        first_vehicle = CarlaActorPool.request_new_actor(config.other_actors[0].model, first_vehicle_transform)
         self.other_actors.append(first_vehicle)
+
 
     def _setup_scenario_trigger(self, config):
         return StandStill(self.ego_vehicles[0], name="StandStill")
@@ -57,14 +57,10 @@ class RssFollowLeadingVehicle(FollowLeadingVehicle):
         If this does not happen within 60 seconds, a timeout stops the scenario
         """
 
-        # to avoid the other actor blocking traffic, it was spawed elsewhere
-        # reset its pose to the required one
-        start_transform = ActorTransformSetter(self.other_actors[0], self._other_actor_transform)
-
         # let the other actor drive until next intersection
         # @todo: We should add some feedback mechanism to respond to ego_vehicle behavior
         other_driving_to_next_intersection = py_trees.composites.Parallel("DrivingTowardsIntersection", policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
-        other_driving_to_next_intersection.add_child(WaypointFollower(self.other_actors[0], self._first_vehicle_speed))
+        other_driving_to_next_intersection.add_child(WaypointFollower(self.other_actors[0], self._other_actor_target_speed))
         other_driving_to_next_intersection.add_child(InTriggerDistanceToNextIntersection(
             self.other_actors[0], self._other_actor_stop_in_front_intersection))
 
@@ -81,7 +77,7 @@ class RssFollowLeadingVehicle(FollowLeadingVehicle):
         endcondition.add_child(endcondition_part2)
    
         ego_drives = py_trees.composites.Parallel("ego", policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
-        ego_drives.add_child(RssBasicAgentBehavior(self._rss_params, self.ego_vehicles[0], self._ego_target_speed, self._ego_destination))
+        ego_drives.add_child(RssBasicAgentBehavior(self._rss_params, self.ego_vehicles[0], self._ego_target_speed, self._target))
         ego_drives.add_child(endcondition)
 
 
@@ -97,7 +93,7 @@ class RssFollowLeadingVehicle(FollowLeadingVehicle):
 
         # Build behavior tree
         sequence = py_trees.composites.Sequence("Sequence Behavior")
-        sequence.add_child(start_transform)
+        sequence.add_child(ActorTransformSetter(self.other_actors[0], self._other_actor_transform))
         sequence.add_child(TimeOut(3))
         sequence.add_child(parallel_drive)
         sequence.add_child(ActorDestroy(self.other_actors[0]))

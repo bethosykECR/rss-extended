@@ -18,9 +18,10 @@ class RssPovUnprotectedLeft(BasicScenario):
     def __init__(self, world, rss_params, filename, ego_vehicles, config, randomize=False, debug_mode=False, criteria_enable=True):
         self._rss_params = rss_params
         self._filename = filename
-        self._ego_target_speed = 10
-        self._other_actor_target_velocity = 10 # Target velocity of other vehicle
+        self._ego_target_speed = config.ego_vehicles[0].target_speed
+        self._other_actor_target_speed = config.other_actors[0].target_speed
         self.timeout=30
+        
         super(RssPovUnprotectedLeft, self).__init__("PovUnprotectedLeft", ego_vehicles, config, world, debug_mode, criteria_enable=criteria_enable)
 
         self._ego_traffic_light = CarlaDataProvider.get_next_traffic_light(self.ego_vehicles[0], False)
@@ -76,7 +77,7 @@ class RssPovUnprotectedLeft(BasicScenario):
 
         pov_driving = py_trees.composites.Sequence("Sequence Behavior")
         pov_driving_intersection = py_trees.composites.Parallel("ContinueDriving", policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
-        pov_driving_intersection.add_child(WaypointFollower(self.other_actors[0], self._other_actor_target_velocity, plan=plan, avoid_collision=False))
+        pov_driving_intersection.add_child(WaypointFollower(self.other_actors[0], self._other_actor_target_speed, plan=plan, avoid_collision=False))
         pov_driving_intersection.add_child(DriveDistance(self.other_actors[0], 40, name="Distance"))
         pov_driving.add_child(pov_driving_intersection)
         pov_driving.add_child(TimeOut(float('inf')))

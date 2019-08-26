@@ -20,7 +20,7 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
         
         self._rss_params = rss_params
         self._filename = filename
-        self._ego_target_speed = 10
+        self._ego_target_speed = config.ego_vehicles[0].target_speed
         self.timeout=30
         super(RssOppositeVehicleRunningRedLight, self).__init__(world, 
                                                      ego_vehicles, 
@@ -29,6 +29,7 @@ class RssOppositeVehicleRunningRedLight(OppositeVehicleRunningRedLight):
                                                      debug_mode,
                                                      criteria_enable,
                                                      self.timeout)
+        self._other_actor_target_velocity = config.other_actors[0].target_speed
         # attr self._other_actor_target_velocity is defined in parent OppositeVehicleRunningRedLight
 
     def _setup_scenario_trigger(self, config):

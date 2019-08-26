@@ -1,7 +1,14 @@
 import carla 
 import xml.etree.ElementTree as ET
-from srunner.scenarioconfigs.scenario_configuration import ScenarioConfiguration
-from srunner.tools.scenario_config_parser import ScenarioConfigurationParser
+from srunner.scenarioconfigs.scenario_configuration import ActorConfiguration
+from srunner.scenarioconfigs.route_scenario_configuration import TargetConfiguration
+
+
+class RssActorConfiguration(ActorConfiguration):
+    def __init__(self, node, rolename):
+    	self.target_speed = float(node.attrib.get('target_speed', 0)) 
+
+    	super(RssActorConfiguration, self).__init__(node, rolename)
 
 
 class CameraConfiguration(object):
@@ -18,31 +25,46 @@ class CameraConfiguration(object):
         self.transform = carla.Transform(location, rotation)
 
 
-class RssScenarioConfiguration(ScenarioConfiguration):
+class RssScenarioConfiguration(object):
+    ego_vehicles = []
+    other_actors = []
+    town = None
+    name = None
+    type = None
+    target = None
     camera = None
 
 
 def parse_rss_scenario_configuration(scenario_config_file, scenario_name):
 
-	new_config = RssScenarioConfiguration()
-	scenario_configurations = ScenarioConfigurationParser.parse_scenario_configuration(scenario_config_file, scenario_name)
-	config = scenario_configurations[0]
-	new_config.name = config.name
-	new_config.town = config.town 
-	new_config.type = config.type
-	new_config.other_actors = config.other_actors
-	new_config.ego_vehicles = config.ego_vehicles
-	new_config.trigger_points = config.trigger_points
-	new_config.target = config.target
-	new_config.route = config.route
+    tree = ET.parse(scenario_config_file)
 
-	rss_scenario_configurations = []
-	tree = ET.parse(scenario_config_file)
-	for scenario in tree.iter("scenario"):
-		name = scenario.attrib.get('name', None)
-		if name == scenario_name:        
-		        for node in scenario.iter("camera"):
-		        	new_config.camera = CameraConfiguration(node)
-		        rss_scenario_configurations.append(new_config)
-		        break
-	return rss_scenario_configurations
+    rss_scenario_configurations = []
+
+    for scenario in tree.iter("scenario"):
+
+        new_config = RssScenarioConfiguration()
+        new_config.town = scenario.attrib.get('town', None)
+        new_config.name = scenario.attrib.get('name', None)
+        new_config.type = scenario.attrib.get('type', None)
+        new_config.other_actors = []
+        new_config.ego_vehicles = []
+
+        for ego_vehicle in scenario.iter("ego_vehicle"):
+            new_config.ego_vehicles.append(RssActorConfiguration(ego_vehicle, 'hero'))
+            #new_config.trigger_points.append(new_config.ego_vehicles[-1].transform)
+
+        for target in scenario.iter("target"):
+            new_config.target = TargetConfiguration(target)
+
+        for other_actor in scenario.iter("other_actor"):
+            new_config.other_actors.append(RssActorConfiguration(other_actor, 'scenario'))
+
+        for node in scenario.iter("camera"):
+        	new_config.camera = CameraConfiguration(node)
+
+        if new_config.name == scenario_name:
+        	rss_scenario_configurations.append(new_config)
+
+    return rss_scenario_configurations
+
