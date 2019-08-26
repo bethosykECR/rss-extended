@@ -25,8 +25,8 @@ class RssBasicAgent(BasicAgent):
 																			  rss_restriction, 
 																			  self._rss_sensor.ego_velocity, 
 																			  self._physics_control_static)
-				#if not (control == vehicle_control_rss):
-				#	print('RSS restrictor is ON: brake=%.3f, steer=%.3f' % (vehicle_control_rss.brake, vehicle_control_rss.steer))
+				if not (control == vehicle_control_rss):
+					print('RSS restrictor is ON: brake=%.3f, steer=%.3f' % (vehicle_control_rss.brake, vehicle_control_rss.steer))
 				control = vehicle_control_rss
 		#-------------------------------------
 		return control

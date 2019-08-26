@@ -251,7 +251,7 @@ class ScenarioRunner(object):
         scenario_config_file = ScenarioConfigurationParser.find_scenario_config(args.scenario, args.configFile) # xml file 
 
         num_simult_runs = 1
-        nruns = 5000
+        nruns = 3000
         ####################################
 
         search_names = ['alpha_lon_accel_max', 'response_time']
