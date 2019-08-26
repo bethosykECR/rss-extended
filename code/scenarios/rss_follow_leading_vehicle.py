@@ -20,7 +20,7 @@ class RssFollowLeadingVehicle(BasicScenario):
         self._target = config.target.transform.location
         self._filename = filename
         self.timeout=30
-        self._other_actor_stop_in_front_intersection = 20
+        self._other_actor_stop_in_front_intersection = 50
         self._other_actor_max_brake = 1.0
 
         super(RssFollowLeadingVehicle, self).__init__("RssFollowLeadingVehicle",
