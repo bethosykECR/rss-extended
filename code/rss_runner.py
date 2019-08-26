@@ -312,10 +312,13 @@ if __name__ == '__main__':
     ARGUMENTS.filename_traj = TRAJ_FILENAME
     ARGUMENTS.configFile = os.path.join(os.getcwd(), 'rss.xml') # do not change this line
     # but do change this scenario:
-    #ARGUMENTS.scenario = 'Rss_FollowLeadingVehicle_1'
-    ARGUMENTS.scenario = 'Rss_lvdad'
-    #ARGUMENTS.scenario = 'Rss_OppositeVehicleRunningRedLight011'
-    #ARGUMENTS.scenario = 'Rss_PovUnprotectedLeft'
+    #ARGUMENTS.scenario = 'Rss_LVS'
+    #ARGUMENTS.scenario = 'Rss_LVM1'
+    #ARGUMENTS.scenario = 'Rss_LVM2'
+    #ARGUMENTS.scenario = 'Rss_LVD'
+    #ARGUMENTS.scenario = 'Rss_LVDAD'
+    #ARGUMENTS.scenario = 'Rss_OppositeVehicleRunningRedLight'
+    ARGUMENTS.scenario = 'Rss_PovUnprotectedLeft'
 
     
     ARGUMENTS.reloadWorld = True

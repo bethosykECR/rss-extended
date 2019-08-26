@@ -70,7 +70,7 @@ class RssFollowLeadingVehicle(BasicScenario):
         endcondition = py_trees.composites.Parallel("Waiting for end position", policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ALL)
         endcondition_part1 = InTriggerDistanceToVehicle(self.other_actors[0],
                                                         self.ego_vehicles[0],
-                                                        distance=20,
+                                                        distance=10,
                                                         name="FinalDistance")
         endcondition_part2 = StandStill(self.ego_vehicles[0], name="StandStill")
         endcondition.add_child(endcondition_part1)
@@ -84,9 +84,9 @@ class RssFollowLeadingVehicle(BasicScenario):
         other_drives = py_trees.composites.Sequence("Sequence Behavior")
         other_drives.add_child(other_driving_to_next_intersection)
         other_drives.add_child(other_stop)
-        other_drives.add_child(endcondition)
+        other_drives.add_child(TimeOut(float('inf')))
        
-        parallel_drive = py_trees.composites.Parallel("DrivingTowardsIntersection", policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ALL)
+        parallel_drive = py_trees.composites.Parallel("DrivingTowardsIntersection", policy=py_trees.common.ParallelPolicy.SUCCESS_ON_ONE)
         parallel_drive.add_child(other_drives)
         parallel_drive.add_child(ego_drives)
 

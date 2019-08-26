@@ -1,12 +1,36 @@
 <?xml version="1.0"?>
 <scenarios>
-    <scenario name="Rss_lvdad" type="RssLVDAD" town="Town01">
+    <scenario name="Rss_LVS" type="RssFollowLeadingVehicle" town="Town01">
+        <ego_vehicle x="107" y="133" z="0.5" yaw="0" target_speed="11.17" model="vehicle.audi.a2" />
+        <other_actor x="250" y="133" z="0.5" yaw="0" target_speed="0" model="vehicle.tesla.model3" />
+        <target x="326" y="133" z="0.5"/>
+        <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
+    </scenario>
+    <scenario name="Rss_LVM1" type="RssFollowLeadingVehicle" town="Town01">
+        <ego_vehicle x="107" y="133" z="0.5" yaw="0" target_speed="11.17" model="vehicle.audi.a2" />
+        <other_actor x="200" y="133" z="0.5" yaw="0" target_speed="4.47" model="vehicle.tesla.model3" />
+        <target x="326" y="133" z="0.5"/>
+        <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
+    </scenario>
+    <scenario name="Rss_LVM2" type="RssFollowLeadingVehicle" town="Town01">
+        <ego_vehicle x="107" y="133" z="0.5" yaw="0" target_speed="20.1" model="vehicle.audi.a2" />
+        <other_actor x="200" y="133" z="0.5" yaw="0" target_speed="8.9" model="vehicle.tesla.model3" />
+        <target x="326" y="133" z="0.5"/>
+        <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
+    </scenario>
+        <scenario name="Rss_LVD" type="RssFollowLeadingVehicle" town="Town01">
+        <ego_vehicle x="107" y="133" z="0.5" yaw="0" target_speed="15.6" model="vehicle.audi.a2" />
+        <other_actor x="132" y="133" z="0.5" yaw="0" target_speed="15.6" model="vehicle.tesla.model3" />
+        <target x="326" y="133" z="0.5"/>
+        <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
+    </scenario>
+    <scenario name="Rss_LVDAD" type="RssLVDAD" town="Town01">
         <ego_vehicle x="-2" y="15" z="0.5" yaw="90" target_speed="10" model="vehicle.audi.a2" />
         <other_actor x="-2" y="40" z="0.5" yaw="90" target_speed="10" model="vehicle.tesla.model3" />
         <target x="-2" y="315" z="0.5"/>
         <camera x="0" y="170" z="170" yaw="0" pitch="-90" />
     </scenario>
-    <scenario name="Rss_OppositeVehicleRunningRedLight011" type="RssOppositeVehicleRunningRedLight" town="Town01">
+    <scenario name="Rss_OppositeVehicleRunningRedLight" type="RssOppositeVehicleRunningRedLight" town="Town01">
         <ego_vehicle x="126.4" y="55.2" z="1" yaw="180" target_speed="10" model="vehicle.audi.a2" />
         <other_actor x="93" y="81" z="1" yaw="270" target_speed="10" model="vehicle.tesla.model3" />
         <camera x="110.4" y="50" z="60" yaw="0" pitch="-90" />
@@ -15,12 +39,6 @@
         <ego_vehicle x="335" y="108" z="1" yaw="90" target_speed="10" model="vehicle.audi.a2" />
         <other_actor x="339" y="153" z="1" yaw="270" target_speed="10" model="vehicle.tesla.model3" />
         <camera x="337.4" y="133" z="60" yaw="0" pitch="-90" />
-    </scenario>
-    <scenario name="Rss_FollowLeadingVehicle_1" type="RssFollowLeadingVehicle" town="Town01">
-        <ego_vehicle x="107" y="133" z="0.5" yaw="0" target_speed="10" model="vehicle.audi.a2" />
-        <other_actor x="132" y="133" z="0.5" yaw="0" target_speed="10" model="vehicle.tesla.model3" />
-        <target x="326" y="133" z="0.5"/>
-        <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
     </scenario>
 </scenarios>
 

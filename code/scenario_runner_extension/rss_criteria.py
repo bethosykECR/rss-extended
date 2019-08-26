@@ -25,6 +25,7 @@ class RssTest(Criterion):
         pov = [actor for actor in self.vehicles if actor.attributes.get('role_name') != 'hero'][0]
         pov_v = pov.get_velocity()
         pov_velocity = math.sqrt(pov_v.x**2 + pov_v.y**2 + pov_v.z**2) # [m/s]
+        #print('EGO_V = %s, POV_V = %s' % (ego_velocity, pov_velocity))
         #pos_ego = self.actor.get_location()
         #pos_pov = pov.get_location()
         #print('pos_ego = (%.6f, %.6f, %.6f), pos_pov = (%.6f, %.6f, %.6f)' % (pos_ego.x, pos_ego.y, pos_ego.z, pos_pov.x, pos_pov.y, pos_pov.z)) 
