@@ -25,8 +25,8 @@
         <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
     </scenario>
     <scenario name="Rss_LVDAD" type="RssLVDAD" town="Town01">
-        <ego_vehicle x="-2" y="15" z="0.5" yaw="90" target_speed="10" model="vehicle.audi.a2" />
-        <other_actor x="-2" y="40" z="0.5" yaw="90" target_speed="10" model="vehicle.tesla.model3" />
+        <ego_vehicle x="-2" y="15" z="0.5" yaw="90" target_speed="11.17" model="vehicle.audi.a2" />
+        <other_actor x="-2" y="40" z="0.5" yaw="90" target_speed="11.17" model="vehicle.tesla.model3" />
         <target x="-2" y="315" z="0.5"/>
         <camera x="0" y="170" z="170" yaw="0" pitch="-90" />
     </scenario>

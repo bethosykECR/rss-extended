@@ -308,10 +308,37 @@ if __name__ == '__main__':
     PARSER.add_argument('--configFile', default='', help='Provide an additional scenario configuration file (*.xml)')
     PARSER.add_argument('--randomize', action="store_true", help='Scenario parameters are randomized')
     ARGUMENTS = PARSER.parse_args()
-
+    ARGUMENTS.reloadWorld = True
     ARGUMENTS.filename_traj = TRAJ_FILENAME
     ARGUMENTS.configFile = os.path.join(os.getcwd(), 'rss.xml') # do not change this line
-    # but do change this scenario:
+    ###############################################################
+    # CHOOSE THE SCENARIO:
+    ###############################################################
+    # 1. Rss_LVS: Leading Vehicle Stopped 
+    #    (One of the Automatic Emergency breaking scenarios (AEB))
+    #       EV velocity:  40.2 km/h = 11.17 m/s
+    #       POV velocity: 0 km/h    = 0 m/s
+    # 2. Rss_LVM1: Leading Vehicle Moving, scenario #1 
+    #    (One of the Automatic Emergency breaking scenarios (AEB))
+    #       EV velocity:  40.2 km/h = 11.17 m/s
+    #       POV velocity: 16.1 km/h = 4.47 m/s
+    # 3. Rss_LVM2: Leading Vehicle Moving, scenario #2 
+    #    (One of the Automatic Emergency breaking scenarios (AEB))
+    #       EV velocity:  72.4 km/h = 20.1 m/s
+    #       POV velocity: 32.2 km/h = 8.9 m/s
+    # 4. Rss_LVD: Leading Vehicle Decelerating
+    #    (One of the Automatic Emergency breaking scenarios (AEB))
+    #       EV velocity:  56.3 km/h = 15.6 m/s
+    #       POV velocity: 56.3 km/h = 15.6 m/s
+    # 5. Rss_LVDAD: Leading Vehicle Decelerates, Accelerates, then Decelerates
+    #    (Traffic Jam Assist scenarios (TJA))
+    #       EV velocity:  40.2 km/h = 11.17 m/s
+    #       POV velocity: 40.2 km/h = 11.17 m/s
+    # 6. Rss_OppositeVehicleRunningRedLight
+    #    (Intersection scenarios)
+    # 7. Rss_PovUnprotectedLeft
+    #    (Intersection scenarios)
+    ###############################################################
     ARGUMENTS.scenario = 'Rss_LVS'
     #ARGUMENTS.scenario = 'Rss_LVM1'
     #ARGUMENTS.scenario = 'Rss_LVM2'
@@ -319,9 +346,7 @@ if __name__ == '__main__':
     #ARGUMENTS.scenario = 'Rss_LVDAD'
     #ARGUMENTS.scenario = 'Rss_OppositeVehicleRunningRedLight'
     #ARGUMENTS.scenario = 'Rss_PovUnprotectedLeft'
-
-    
-    ARGUMENTS.reloadWorld = True
+    ###############################################################
 
     SCENARIORUNNER = None
     try:
