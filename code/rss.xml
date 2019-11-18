@@ -1,44 +1,182 @@
 <?xml version="1.0"?>
 <scenarios>
-    <scenario name="Rss_LVS" type="RssFollowLeadingVehicle" town="Town01">
-        <ego_vehicle x="107" y="133" z="0.5" yaw="0" target_speed="11.17" model="vehicle.audi.a2" />
-        <other_actor x="250" y="133" z="0.5" yaw="0" target_speed="0" model="vehicle.tesla.model3" />
-        <target x="326" y="133" z="0.5"/>
-        <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
+    <scenario name="Rss_Ext_FI_a" type="RssExtForwardIncursion" town="Town05">
+        <ego_vehicle x="-140" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-110" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-125" y="201" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-90" y="200" z="100" yaw="-90" pitch="270" />
     </scenario>
-    <scenario name="Rss_LVM1" type="RssFollowLeadingVehicle" town="Town01">
-        <ego_vehicle x="107" y="133" z="0.5" yaw="0" target_speed="11.17" model="vehicle.audi.a2" />
-        <other_actor x="200" y="133" z="0.5" yaw="0" target_speed="4.47" model="vehicle.tesla.model3" />
-        <target x="326" y="133" z="0.5"/>
-        <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
-    </scenario>
-    <scenario name="Rss_LVM2" type="RssFollowLeadingVehicle" town="Town01">
-        <ego_vehicle x="107" y="133" z="0.5" yaw="0" target_speed="20.1" model="vehicle.audi.a2" />
-        <other_actor x="200" y="133" z="0.5" yaw="0" target_speed="8.9" model="vehicle.tesla.model3" />
-        <target x="326" y="133" z="0.5"/>
-        <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
-    </scenario>
-        <scenario name="Rss_LVD" type="RssFollowLeadingVehicle" town="Town01">
-        <ego_vehicle x="107" y="133" z="0.5" yaw="0" target_speed="15.6" model="vehicle.audi.a2" />
-        <other_actor x="132" y="133" z="0.5" yaw="0" target_speed="15.6" model="vehicle.tesla.model3" />
-        <target x="326" y="133" z="0.5"/>
-        <camera x="215" y="120" z="120" yaw="-90" pitch="270" />
-    </scenario>
-    <scenario name="Rss_LVDAD" type="RssLVDAD" town="Town01">
-        <ego_vehicle x="-2" y="15" z="0.5" yaw="90" target_speed="11.17" model="vehicle.audi.a2" />
-        <other_actor x="-2" y="40" z="0.5" yaw="90" target_speed="11.17" model="vehicle.tesla.model3" />
-        <target x="-2" y="315" z="0.5"/>
-        <camera x="0" y="170" z="170" yaw="0" pitch="-90" />
-    </scenario>
-    <scenario name="Rss_OppositeVehicleRunningRedLight" type="RssOppositeVehicleRunningRedLight" town="Town01">
-        <ego_vehicle x="126.4" y="55.2" z="1" yaw="180" target_speed="10" model="vehicle.audi.a2" />
-        <other_actor x="93" y="81" z="1" yaw="270" target_speed="10" model="vehicle.tesla.model3" />
-        <camera x="110.4" y="50" z="60" yaw="0" pitch="-90" />
-    </scenario>
-    <scenario name="Rss_PovUnprotectedLeft" type="RssPovUnprotectedLeft" town="Town01">
-        <ego_vehicle x="335" y="108" z="1" yaw="90" target_speed="10" model="vehicle.audi.a2" />
-        <other_actor x="339" y="153" z="1" yaw="270" target_speed="10" model="vehicle.tesla.model3" />
-        <camera x="337.4" y="133" z="60" yaw="0" pitch="-90" />
-    </scenario>
-</scenarios>
 
+    <scenario name="Rss_Ext_FI_b" type="RssExtForwardIncursion" town="Town05">
+        <ego_vehicle x="-140" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-110" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-125" y="201" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-90" y="200" z="100" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_SI_a" type="RssExtSideIncursion" town="Town05">
+        <ego_vehicle x="-140" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-110" y="207" z="10" yaw="0" target_speed="0" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-110" y="200" z="50" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_SI_b" type="RssExtSideIncursion" town="Town05">
+        <ego_vehicle x="-140" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-110" y="207" z="10" yaw="0" target_speed="0" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-110" y="200" z="50" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_SI_c" type="RssExtSideIncursion" town="Town05">
+        <ego_vehicle x="-140" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-110" y="206" z="10" yaw="0" target_speed="0" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-110" y="200" z="50" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_SFD_a" type="RssExtShorterFollowingDistance" town="Town05">
+        <ego_vehicle x="-140" y="205" z="10" yaw="0" target_speed="30" model="vehicle.audi.a2" />
+        <other_actor x="-130" y="205" z="10" yaw="0" target_speed="15" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-90" y="200" z="100" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_SFD_b" type="RssExtShorterFollowingDistance" town="Town05">
+        <ego_vehicle x="-140" y="205" z="10" yaw="0" target_speed="30" model="vehicle.audi.a2" />
+        <other_actor x="-130" y="205" z="10" yaw="0" target_speed="15" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-90" y="200" z="100" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_PLAT_a" type="RssExtPlatooning" town="Town05">
+        <ego_vehicle x="-130" y="205" z="10" yaw="0" target_speed="30" model="vehicle.audi.a2" />
+        <other_actor x="-120" y="205" z="10" yaw="0" target_speed="20" model="vehicle.audi.a2" />
+        <other_actor x="-140" y="205" z="10" yaw="0" target_speed="30" model="vehicle.audi.a2" />
+        <other_actor x="-150" y="205" z="10" yaw="0" target_speed="30" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-90" y="200" z="100" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_PLAT_b" type="RssExtPlatooning" town="Town05">
+        <ego_vehicle x="-130" y="205" z="10" yaw="0" target_speed="30" model="vehicle.audi.a2" />
+        <other_actor x="-120" y="205" z="10" yaw="0" target_speed="20" model="vehicle.audi.a2" />
+        <other_actor x="-140" y="205" z="10" yaw="0" target_speed="30" model="vehicle.audi.a2" />
+        <other_actor x="-150" y="205" z="10" yaw="0" target_speed="30" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-90" y="200" z="100" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_SFDMG_a" type="RssExtShorterFollowingDistanceMG" town="Town03">
+        <ego_vehicle x="-32" y="2" z="0" yaw="0" target_speed="10" model="vehicle.audi.a2" />
+        <other_actor x="-23" y="-4" z="0" yaw="110" target_speed="10" model="vehicle.audi.a2" />
+        <target x="60" y="0" z="0"/>
+        <camera x="0" y="0" z="70" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_SFDMG_b" type="RssExtShorterFollowingDistanceMG" town="Town03">
+        <ego_vehicle x="-50" y="1" z="0" yaw="0" target_speed="10" model="vehicle.audi.a2" />
+        <other_actor x="-23" y="-4" z="0" yaw="110" target_speed="10" model="vehicle.audi.a2" />
+        <target x="60" y="0" z="0"/>
+        <camera x="0" y="0" z="70" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_SFDMG_c" type="RssExtShorterFollowingDistanceMG" town="Town03">
+        <ego_vehicle x="-42" y="1" z="0" yaw="0" target_speed="10" model="vehicle.audi.a2" />
+        <other_actor x="-23" y="-4" z="0" yaw="110" target_speed="10" model="vehicle.audi.a2" />
+        <target x="60" y="0" z="0"/>
+        <camera x="0" y="0" z="70" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_MERGE_a" type="RssExtMerge" town="Town05">
+        <ego_vehicle x="-130" y="201" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-110" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-120" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-137" y="205" z="10" yaw="0" target_speed="22" model="vehicle.audi.a2" />
+        <other_actor x="-146" y="205" z="10" yaw="0" target_speed="22" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-90" y="200" z="100" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_MERGE_b" type="RssExtMerge" town="Town05">
+        <ego_vehicle x="-130" y="201" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-110" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-120" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-140" y="205" z="10" yaw="0" target_speed="22" model="vehicle.audi.a2" />
+        <other_actor x="-146" y="205" z="10" yaw="0" target_speed="22" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-90" y="200" z="100" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_MERGE_c" type="RssExtMerge" town="Town05">
+        <ego_vehicle x="-130" y="201" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-110" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-120" y="205" z="10" yaw="0" target_speed="25" model="vehicle.audi.a2" />
+        <other_actor x="-140" y="205" z="10" yaw="0" target_speed="22" model="vehicle.audi.a2" />
+        <other_actor x="-146" y="205" z="10" yaw="0" target_speed="22" model="vehicle.audi.a2" />
+        <target x="120" y="205" z="10"/>
+        <camera x="-90" y="200" z="100" yaw="-90" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_OCCL_a" type="RssExtOcclusion" town="Town01">
+        <ego_vehicle x="305" y="60" z="0" yaw="0" target_speed="15" model="vehicle.audi.a2" />
+        <other_actor x="335" y="30" z="0" yaw="90" target_speed="15" model="vehicle.audi.a2" />
+        <target x="340" y="10" z="10"/>
+        <camera x="330" y="60" z="70" yaw="0" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_OCCL_b" type="RssExtOcclusion" town="Town01">
+        <ego_vehicle x="305" y="60" z="0" yaw="0" target_speed="6" model="vehicle.audi.a2" />
+        <other_actor x="335" y="30" z="0" yaw="90" target_speed="15" model="vehicle.audi.a2" />
+        <target x="340" y="10" z="10"/>
+        <camera x="330" y="60" z="70" yaw="0" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_OCCL_c" type="RssExtOcclusion" town="Town01">
+        <ego_vehicle x="305" y="60" z="0" yaw="0" target_speed="8" model="vehicle.audi.a2" />
+        <other_actor x="335" y="30" z="0" yaw="90" target_speed="15" model="vehicle.audi.a2" />
+        <target x="340" y="10" z="10"/>
+        <camera x="330" y="60" z="70" yaw="0" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_TEMPOCCL_a" type="RssExtTempOcclusion" town="Town03">
+        <ego_vehicle x="-110" y="136" z="1" yaw="0" target_speed="15" model="vehicle.audi.a2" />
+        <other_actor x="-100" y="136" z="1" yaw="0" target_speed="15" model="vehicle.carlamotors.carlacola" />
+        <target x="50" y="10" z="10"/>
+        <camera x="-111" y="136" z="1" yaw="0" pitch="20" />
+    </scenario>
+
+    <scenario name="Rss_Ext_TEMPOCCL_b" type="RssExtTempOcclusion" town="Town03">
+        <ego_vehicle x="-110" y="136" z="1" yaw="0" target_speed="15" model="vehicle.audi.a2" />
+        <other_actor x="-100" y="136" z="1" yaw="0" target_speed="15" model="vehicle.carlamotors.carlacola" />
+        <target x="50" y="10" z="10"/>
+        <camera x="-111" y="136" z="1" yaw="0" pitch="20" />
+    </scenario>
+
+    <scenario name="Rss_Ext_PASSPED_a" type="RssExtPassPedestrian" town="Town02">
+        <ego_vehicle x="88.71" y="241.28" z="1.370" yaw="0" target_speed="15" model="vehicle.audi.a2" />
+        <target x="88.71" y="200" z="0"/>
+        <camera x="116" y="238" z="20" yaw="270" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_PASSPED_b" type="RssExtPassPedestrian" town="Town02">
+        <ego_vehicle x="88.71" y="241.28" z="1.370" yaw="0" target_speed="15" model="vehicle.audi.a2" />
+        <target x="88.71" y="200" z="0"/>
+        <camera x="116" y="238" z="20" yaw="270" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_PASSPED_c" type="RssExtPassPedestrian" town="Town02">
+        <ego_vehicle x="88.71" y="241.28" z="1.370" yaw="0" target_speed="15" model="vehicle.audi.a2" />
+        <target x="88.71" y="200" z="0"/>
+        <camera x="116" y="238" z="20" yaw="270" pitch="270" />
+    </scenario>
+
+    <scenario name="Rss_Ext_PARKLOT_a" type="RssExtParkingLot" town="Town02">
+        <ego_vehicle x="180" y="218" z="1" yaw="270" target_speed="15" model="vehicle.audi.a2" />
+        <target x="200" y="210" z="0"/>
+        <camera x="170" y="230" z="50" yaw="270" pitch="270" />
+    </scenario>
+
+</scenarios>
