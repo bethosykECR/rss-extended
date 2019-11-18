@@ -16,8 +16,8 @@ def is_between(v1, v2, v3):
 
 
 def check_collision(rect0, rect1):
-    p1 = Polygon(tuple(map(tuple, rect0)))   
-    p2 = Polygon(tuple(map(tuple, rect1)))   
+    p1 = Polygon(tuple(map(tuple, rect0)))
+    p2 = Polygon(tuple(map(tuple, rect1)))
     collision = (p1.intersection(p2).area > 0.0)
     return collision
 
@@ -51,7 +51,7 @@ def get_dist_vert_segm(rect_vert, rect_segm):
         vect_segm = point_s0-point_s1
         vect_0 = point_s0-point_vert
         vect_1 = point_vert-point_s1
-        
+
         angle0 = math.acos(np.dot(vect_segm, vect_0) / (np.linalg.norm(vect_segm) * np.linalg.norm(vect_0)))
         angle1 = math.acos(np.dot(vect_segm, vect_1) / (np.linalg.norm(vect_segm) * np.linalg.norm(vect_1)))
 
@@ -65,10 +65,10 @@ def get_dist_vert_segm(rect_vert, rect_segm):
             #print('point_vert = (%.2f, %.2f)' % (point_vert[0], point_vert[1]))
             #print(math.degrees(angle0))
             #print(math.degrees(angle1))
-            
+
             # perp length from vert to segment
             perp = np.linalg.norm(np.cross(point_s1-point_s0, point_s0-point_vert))/np.linalg.norm(point_s0-point_s1)
-            D.append(perp) 
+            D.append(perp)
     try:
         d = min(D)
     except ValueError:
@@ -77,9 +77,13 @@ def get_dist_vert_segm(rect_vert, rect_segm):
 
 
 def evaluate_dist(vehicles):
+    # What should this return if there is only one vehicle?
+
     V = [] # array of vertices
     for vehicle in vehicles:
-        transform = vehicle.get_transform() 
+        print('vehicle')
+        print(vehicle)
+        transform = vehicle.get_transform()
         bounding_box = vehicle.bounding_box
         #print(bounding_box)
         #print(transform)
@@ -92,7 +96,7 @@ def evaluate_dist(vehicles):
             [- ext.x, - ext.y],
             [  ext.x, - ext.y]
         ])
-        
+
         for point in points:
             ll = carla.Location(x=point[0],y=point[1],z=1)
             ll = transform.transform(ll)
@@ -102,22 +106,23 @@ def evaluate_dist(vehicles):
             #world.world.debug.draw_point(ll, color=carla.Color(r=255, g=0, b=0))
         V.append(points)
         #world.world.debug.draw_box(bounding_box, transform.rotation)
-    
-    rect0 = V[0]
-    rect1 = V[1]
 
-    bool_collision = check_collision(rect0, rect1)
-    #print(bool_collision)
     d = 0.0
-    if not bool_collision:
-        min1 = get_dist_vert_vert(rect0, rect1)
-        min2 = get_dist_vert_segm(rect0, rect1)
-        min3 = get_dist_vert_segm(rect1, rect0)
+    if (len(V) >= 2):
+        rect0 = V[0]
+        rect1 = V[1]
 
-        #print('min1 = %.2f' % min1)
-        #print('min2 = %.2f' % min2)
-        #print('min3 = %.2f' % min3)
-        d = min(min1, min2, min3)
+        bool_collision = check_collision(rect0, rect1)
+        #print(bool_collision)
+
+        if not bool_collision:
+            min1 = get_dist_vert_vert(rect0, rect1)
+            min2 = get_dist_vert_segm(rect0, rect1)
+            min3 = get_dist_vert_segm(rect1, rect0)
+
+            #print('min1 = %.2f' % min1)
+            #print('min2 = %.2f' % min2)
+            #print('min3 = %.2f' % min3)
+            d = min(min1, min2, min3)
+
     return d
-
-
